@@ -10,8 +10,8 @@ export default {
   findById(id) {
     return User.findById(id);
   },
-  updateById(id) {
-    return User.findByIdAndUpdate(id);
+  updateById(id, data) {
+    return User.findByIdAndUpdate(id, data, {new:true});
   },
   deleteById(id) {
     return User.findByIdAndDelete(id);
