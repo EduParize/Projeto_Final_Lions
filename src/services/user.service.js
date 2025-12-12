@@ -45,7 +45,7 @@ export default {
       }
       const existing = await repo.findByEmail(payload.email);
       if (existing && existing.id !== id) {
-        throw createError("E-mail j[a cadastrado.", 409);
+        throw createError("E-mail já cadastrado.", 409);
       }
       payload.email = payload.email.trim().toLowerCase();
     }
