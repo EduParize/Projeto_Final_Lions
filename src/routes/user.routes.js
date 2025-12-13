@@ -4,6 +4,7 @@ import {ensureValidId} from '../middlewares/validate.middleware.js'
 
 const router = Router()
 
+router.post('/login', userController.login)
 router.post('/users', userController.create);
 router.get('/users', userController.list);
 router.get('/users/:id', ensureValidId, userController.get);

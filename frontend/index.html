@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Jogadores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Gerenciamento de Jogadores ⚽</h1>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Novo Jogador</h5>
+                <form id="form-jogador" class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" id="nome" class="form-control" placeholder="Nome do Jogador" required>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="posicao" class="form-select" required>
+                            <option value="" selected disabled>Escolha a Posição</option>
+                            <option value="Goleiro">Goleiro</option>
+                            <option value="Defensor">Defensor</option>
+                            <option value="Meio Campo">Meio Campo</option>
+                            <option value="Atacante">Atacante</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Elenco Atual</h5>
+            </div>
+            <ul id="lista-jogadores" class="list-group list-group-flush">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/players';
+
+        // Função para Buscar e Mostrar Jogadores
+        async function carregarJogadores() {
+            try {
+                const response = await fetch(API_URL);
+                const jogadores = await response.json();
+                
+                const lista = document.getElementById('lista-jogadores');
+                lista.innerHTML = ''; // Limpa a lista antes de adicionar
+
+                jogadores.forEach(jogador => {
+                    const item = document.createElement('li');
+                    item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    item.innerHTML = `
+                        <span>
+                            <strong>${jogador.namePlayer}</strong> 
+                            <span class="badge bg-secondary ms-2">${jogador.positionPlayer}</span>
+                        </span>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deletarJogador('${jogador._id}')">Remover</button>
+                    `;
+                    lista.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar:', error);
+                alert('Erro ao conectar com a API. O servidor está rodando?');
+            }
+        }
+
+        // Função para Criar Jogador
+        document.getElementById('form-jogador').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Não deixa a página recarregar
+
+            const nome = document.getElementById('nome').value;
+            const posicao = document.getElementById('posicao').value;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        namePlayer: nome,
+                        positionPlayer: posicao
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Jogador cadastrado!');
+                    document.getElementById('form-jogador').reset(); // Limpa o formulário
+                    carregarJogadores(); // Recarrega a lista
+                } else {
+                    const erro = await response.json();
+                    alert('Erro: ' + (erro.error || 'Falha ao salvar'));
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Erro na requisição.');
+            }
+        });
+
+        // Função para Deletar
+        async function deletarJogador(id) {
+            if(!confirm('Tem certeza que deseja remover este jogador?')) return;
+
+            try {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                carregarJogadores(); // Atualiza a lista
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Carrega a lista assim que abre a página
+        carregarJogadores();
+    </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import repo from "../repositories/user.repository.js";
 import createError from "../utils/app-error.js";
-import hashPassword from "../utils/hash-password.js";
+import hashPassword, { compareHashedPassword } from "../utils/hash-password.js";
+import jwt from "jsonwebtoken";
 
 function ensureValidPayload({ name, email, password }) {
   if (!name?.trim()) throw createError("Nome é obrigatorio.", 400);
@@ -22,8 +23,27 @@ export default {
       name: data.name.trim(),
       email: data.email.trim().toLowerCase(),
       password: hashedPassword,
-      role: data.role || "USER"
+      role: data.role || "USER",
     });
+  },
+  async loginUser(email, password) {
+    if (!email || !password) {
+      throw createError("Email e senha são obrigatorios", 400);
+    }
+    const user = await repo.findByEmail(email);
+    if (!user) {
+      throw createError("Email ou senha invalidos", 401);
+    }
+    const isMatch = compareHashedPassword(password, user.password);
+    if (!isMatch) {
+      throw createError("Email ou senha invalidos", 401);
+    }
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    return { token, user: { name: user.name, email: user.email } };
   },
 
   async listUsers() {
@@ -40,7 +60,7 @@ export default {
     const payload = { ...data };
 
     if (payload.email) {
-      if (!payload.email.include("@")) {
+      if (!payload.email.includes("@")) {
         throw createError("E-mail inválido.", 400);
       }
       const existing = await repo.findByEmail(payload.email);
@@ -51,6 +71,9 @@ export default {
     }
     if (payload.name) {
       payload.name = payload.name.trim();
+    }
+    if (payload.password) {
+      payload.password = hashPassword(payload.password);
     }
 
     Object.keys(payload).forEach((key) => {
