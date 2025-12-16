@@ -30,7 +30,9 @@ export default {
     if (!email || !password) {
       throw createError("Email e senha são obrigatorios", 400);
     }
-    const user = await repo.findByEmail(email);
+
+    const user = await repo.findByEmail(email).populate('myTeam');
+
     if (!user) {
       throw createError("Email ou senha invalidos", 401);
     }
@@ -43,8 +45,24 @@ export default {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    return { token, user: { name: user.name, email: user.email } };
+    return { 
+      token, 
+      user: { 
+        _id: user._id,
+        name: user.name, 
+        email: user.email, 
+        role: user.role,
+        myTeam: user.myTeam || [] 
+      }
+    }
   },
+  async saveUserTeam(userId, playerIds) {
+    const updatedUser = await repo.updateById(userId, { myTeam: playerIds });
+    if (!updatedUser) throw createError("Usuário não encontrado", 404);
+    
+    return updatedUser.populate('myTeam');
+  },
+  
 
   async listUsers() {
     return repo.findAll();

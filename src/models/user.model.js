@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   },
   password: { type: String, required: true },
   role: { type: [String], enum: ["ADMIN", "USER"], default: "USER" },
+  myTeam: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }]
 });
 
 export default mongoose.model("User", userSchema);

@@ -29,6 +29,18 @@ export default {
       next(error);
     }
   },
+  async saveTeam(req, res, next) {
+    try {
+      
+      const userId = req.user.id; 
+      const { playerIds } = req.body;
+
+      const updatedUser = await userService.saveUserTeam(userId, playerIds);
+      res.json(updatedUser.myTeam);
+    } catch (error) {
+      next(error);
+    }
+  },
 
   async list(req, res, next) {
     try {
