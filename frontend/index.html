@@ -30,7 +30,7 @@
         .player-name { background-color: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 5px; }
         .bg-selected { background-color: #006437 !important; color: white !important; }
         
-        /* Área Admin Secreta */
+        /* Área Admin */
         .admin-panel { display: none; border: 2px dashed #ffc107; background: #fff3cd; }
     </style>
 </head>
@@ -56,8 +56,7 @@
         <div class="tab-content">
             
             <div class="tab-pane fade show active" id="tab-history">
-                <div id="history-container">
-                    </div>
+                <div id="history-container"></div>
             </div>
 
             <div class="tab-pane fade" id="tab-squad">
@@ -68,9 +67,7 @@
                             <div class="card-body">
                                 <h6 class="fw-bold text-warning-emphasis">⚙️ Admin: Adicionar Jogador</h6>
                                 <form id="form-admin" class="row g-2">
-                                    <div class="col-12">
-                                        <input type="text" id="adm-nome" class="form-control form-control-sm" placeholder="Nome do Jogador" required>
-                                    </div>
+                                    <div class="col-12"><input type="text" id="adm-nome" class="form-control form-control-sm" placeholder="Nome" required></div>
                                     <div class="col-8">
                                         <select id="adm-posicao" class="form-select form-select-sm" required>
                                             <option value="" disabled selected>Posição</option>
@@ -80,9 +77,7 @@
                                             <option value="Atacante">Atacante</option>
                                         </select>
                                     </div>
-                                    <div class="col-4">
-                                        <button type="submit" class="btn btn-warning btn-sm w-100">Add</button>
-                                    </div>
+                                    <div class="col-4"><button type="submit" class="btn btn-warning btn-sm w-100">Add</button></div>
                                 </form>
                             </div>
                         </div>
@@ -91,8 +86,13 @@
                             <div class="card-body">
                                 <h5>Seu Elenco</h5>
                                 <p class="small text-muted">Monte seu time com os craques da história.</p>
-                                <button class="btn btn-success w-100 mb-2" onclick="salvarTime()">💾 Salvar Time</button>
-                                <button class="btn btn-outline-danger w-100" onclick="limparEscalacao()">Limpar</button>
+                                
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success" onclick="salvarTime()">💾 Salvar Time</button>
+                                    <button class="btn btn-primary" onclick="verEscalacao()">📋 Ver Escalação</button>
+                                    <button class="btn btn-outline-secondary" onclick="restaurarSalvo()">🔄 Restaurar Salvo</button>
+                                    <button class="btn btn-outline-danger" onclick="limparEscalacao()">❌ Limpar Campo</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -137,70 +137,86 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalEscalacao" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">🐷 Escalação Atual</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="lista-resumo" class="list-group">
+                        </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const API_URL = 'http://localhost:3000/api';
         const user = JSON.parse(localStorage.getItem('user'));
         const token = localStorage.getItem('token');
+        
         let timeAtual = new Array(11).fill(null);
+        let todosJogadores = [];
+        let slotFoco = null;
 
         if (!token) window.location.href = 'login.html';
-
         document.getElementById('user-display').innerText = `Olá, ${user.name}`;
         
-        // --- LÓGICA DE ADMIN ---
-        // Verifica se o array de roles inclui "ADMIN" (ou se for string, se é igual)
-        const isAdmin = user.role && (user.role.includes("ADMIN") || user.role === "ADMIN");
-
-        if (isAdmin) {
-            // Mostra o painel amarelo de adicionar jogador
+        // Admin Check
+        if (user.role && (user.role.includes("ADMIN") || user.role === "ADMIN")) {
             document.getElementById('admin-panel').style.display = 'block';
         }
 
-        // Função de Adicionar Jogador (Exclusiva Admin)
-        document.getElementById('form-admin').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const nome = document.getElementById('adm-nome').value;
-            const posicao = document.getElementById('adm-posicao').value;
+        // --- INICIALIZAÇÃO ---
+        restaurarSalvo(); // Já carrega o time salvo ao abrir
 
-            try {
-                const res = await fetch(`${API_URL}/players`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ namePlayer: nome, positionPlayer: posicao })
+        // --- FUNÇÕES ---
+
+        function restaurarSalvo() {
+            if (user.myTeam && user.myTeam.length > 0) {
+                timeAtual.fill(null); // Limpa memória
+                user.myTeam.forEach((jogador, index) => {
+                    if (index < 11 && jogador) {
+                        timeAtual[index] = jogador;
+                        atualizarSlotVisual(index, jogador);
+                    }
                 });
-
-                if (res.ok) {
-                    alert('Jogador adicionado ao banco com sucesso! 🐷');
-                    document.getElementById('form-admin').reset();
-                    // Se a modal de seleção estiver aberta, poderia atualizar, mas o usuário vai clicar de novo
-                } else {
-                    const data = await res.json();
-                    alert('Erro: ' + (data.error || 'Falha ao criar'));
-                }
-            } catch (error) {
-                console.error(error);
-                alert('Erro de conexão');
+            } else {
+                limparEscalacao();
             }
-        });
-
-        // --- RESTO DO CÓDIGO (História e Time) ---
-        
-        // Carrega time salvo
-        if (user.myTeam && user.myTeam.length > 0) {
-            user.myTeam.forEach((jogador, index) => {
-                if (index < 11 && jogador) {
-                    timeAtual[index] = jogador;
-                    atualizarSlotVisual(index, jogador);
-                }
-            });
         }
 
-        let slotFoco = null;
-        let todosJogadores = [];
+        function verEscalacao() {
+            const lista = document.getElementById('lista-resumo');
+            lista.innerHTML = '';
+            
+            const posicoes = ["Atacante", "Atacante", "Atacante", "Meio Campo", "Meio Campo", "Meio Campo", "Defensor", "Defensor", "Defensor", "Defensor", "Goleiro"];
+            let temJogador = false;
+
+            timeAtual.forEach((jogador, i) => {
+                if (jogador) {
+                    temJogador = true;
+                    lista.innerHTML += `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><strong>${jogador.namePlayer}</strong></span>
+                            <span class="badge bg-secondary">${posicoes[i]}</span>
+                        </li>
+                    `;
+                }
+            });
+
+            if (!temJogador) {
+                lista.innerHTML = '<li class="list-group-item text-center text-muted">Nenhum jogador escalado ainda.</li>';
+            }
+
+            new bootstrap.Modal(document.getElementById('modalEscalacao')).show();
+        }
 
         async function carregarJogadoresDisponiveis() {
             try {
@@ -212,13 +228,13 @@
         function abrirSelecao(posicao, slotId) {
             slotFoco = slotId;
             const listaDiv = document.getElementById('lista-selecao');
-            listaDiv.innerHTML = '';
+            listaDiv.innerHTML = '<div class="text-center p-2">Carregando...</div>';
             
-            // Recarrega a lista para garantir que jogadores novos apareçam
             carregarJogadoresDisponiveis().then(() => {
+                listaDiv.innerHTML = '';
                 const filtrados = todosJogadores.filter(p => p.positionPlayer === posicao);
                 
-                if(filtrados.length === 0) listaDiv.innerHTML = '<div class="p-2">Nenhum jogador encontrado para esta posição.</div>';
+                if(filtrados.length === 0) listaDiv.innerHTML = '<div class="p-2">Nenhum jogador encontrado.</div>';
 
                 filtrados.forEach(j => {
                     const btn = document.createElement('button');
@@ -267,20 +283,36 @@
                     const novoTime = await res.json();
                     user.myTeam = novoTime;
                     localStorage.setItem('user', JSON.stringify(user));
-                    alert('Time salvo! 🐷');
+                    alert('Time salvo com sucesso! 🐷');
+                    verEscalacao(); // Abre a lista automaticamente ao salvar!
                 } else {
                     alert('Erro ao salvar.');
                 }
             } catch (error) { console.error(error); alert('Erro conexão'); }
         }
 
-        // Mock History Data
+        // --- ADMIN ---
+        document.getElementById('form-admin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('adm-nome').value;
+            const posicao = document.getElementById('adm-posicao').value;
+            try {
+                const res = await fetch(`${API_URL}/players`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ namePlayer: nome, positionPlayer: posicao })
+                });
+                if (res.ok) { alert('Adicionado!'); document.getElementById('form-admin').reset(); }
+                else { const d = await res.json(); alert(d.error); }
+            } catch (error) { alert('Erro'); }
+        });
+
+        // --- HISTÓRIA MOCK ---
         const historyData = [
             { year: 2023, titles: ["Brasileirão", "Paulista", "Supercopa"], summary: "O ano do Dodeca!", shirt1: "https://via.placeholder.com/100?text=2023_1", shirt2: "https://via.placeholder.com/100?text=2023_2" },
             { year: 2022, titles: ["Brasileirão", "Paulista", "Recopa"], summary: "O ano do Hendeca!", shirt1: "https://via.placeholder.com/100?text=2022_1", shirt2: "https://via.placeholder.com/100?text=2022_2" },
-            { year: 2021, titles: ["Libertadores"], summary: "Glória Eterna Tricampeã!", shirt1: "https://via.placeholder.com/100?text=2021_1", shirt2: "https://via.placeholder.com/100?text=2021_2" }
+             { year: 2021, titles: ["Libertadores"], summary: "Glória Eterna Tricampeã!", shirt1: "https://via.placeholder.com/100?text=2021_1", shirt2: "https://via.placeholder.com/100?text=2021_2" }
         ];
-        
         const histContainer = document.getElementById('history-container');
         historyData.forEach(h => {
             histContainer.innerHTML += `
