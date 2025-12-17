@@ -1,337 +1,624 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Palmeiras History & Squad</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        :root { --palmeiras-green: #006437; --palmeiras-dark: #004626; }
-        body { background-color: #f4f4f4; }
-        .header-app { background-color: var(--palmeiras-green); color: white; padding: 15px; }
-        
-        /* Campo */
-        .field-container {
-            background: linear-gradient(0deg, #2e7d32 0%, #388e3c 50%, #2e7d32 100%);
-            border: 5px solid white; border-radius: 10px;
-            padding: 20px; position: relative; min-height: 600px;
-            display: flex; flex-direction: column; justify-content: space-around;
-        }
-        .field-line { border-top: 2px solid rgba(255,255,255,0.3); width: 100%; position: absolute; top: 50%; }
-        .center-circle { width: 100px; height: 100px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+      :root {
+        --palmeiras-green: #006437;
+        --palmeiras-dark: #004626;
+      }
+      body {
+        background-color: #f4f4f4;
+      }
+      .header-app {
+        background-color: var(--palmeiras-green);
+        color: white;
+        padding: 15px;
+      }
 
-        .player-slot { text-align: center; cursor: pointer; transition: 0.3s; z-index: 10; }
-        .player-slot:hover { transform: scale(1.1); }
-        .slot-circle {
-            width: 60px; height: 60px; background-color: white; border-radius: 50%;
-            margin: 0 auto; display: flex; justify-content: center; align-items: center;
-            border: 3px solid var(--palmeiras-green); font-size: 1.5rem; color: #ccc;
-        }
-        .player-name { background-color: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 5px; }
-        .bg-selected { background-color: #006437 !important; color: white !important; }
-        
-        /* Área Admin */
-        .admin-panel { display: none; border: 2px dashed #ffc107; background: #fff3cd; }
+      /* Campo */
+      .field-container {
+        background: linear-gradient(
+          0deg,
+          #2e7d32 0%,
+          #388e3c 50%,
+          #2e7d32 100%
+        );
+        border: 5px solid white;
+        border-radius: 10px;
+        padding: 20px;
+        position: relative;
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+      .field-line {
+        border-top: 2px solid rgba(255, 255, 255, 0.3);
+        width: 100%;
+        position: absolute;
+        top: 50%;
+      }
+      .center-circle {
+        width: 100px;
+        height: 100px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .player-slot {
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 10;
+      }
+      .player-slot:hover {
+        transform: scale(1.1);
+      }
+      .slot-circle {
+        width: 60px;
+        height: 60px;
+        background-color: white;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 3px solid var(--palmeiras-green);
+        font-size: 1.5rem;
+        color: #ccc;
+      }
+      .player-name {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-top: 5px;
+      }
+      .bg-selected {
+        background-color: #006437 !important;
+        color: white !important;
+      }
+
+      /* Área Admin */
+      .admin-panel {
+        display: none;
+        border: 2px dashed #ffc107;
+        background: #fff3cd;
+      }
     </style>
-</head>
-<body>
-
-    <div class="header-app d-flex justify-content-between align-items-center shadow">
-        <div class="d-flex align-items-center gap-2">
-            <span style="font-size: 1.5rem;">🐷</span>
-            <div>
-                <h5 class="m-0 fw-bold">Verdão Info</h5>
-                <small id="user-display">Bem-vindo</small>
-            </div>
+  </head>
+  <body>
+    <div
+      class="header-app d-flex justify-content-between align-items-center shadow"
+    >
+      <div class="d-flex align-items-center gap-2">
+        <span style="font-size: 1.5rem">🐷</span>
+        <div>
+          <h5 class="m-0 fw-bold">Verdão Info</h5>
+          <small id="user-display">Bem-vindo</small>
         </div>
-        <button onclick="logout()" class="btn btn-outline-light btn-sm">Sair</button>
+      </div>
+      <button onclick="logout()" class="btn btn-outline-light btn-sm">
+        Sair
+      </button>
     </div>
 
     <div class="container mt-4">
-        <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-history">🏆 História</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-squad" onclick="carregarJogadoresDisponiveis()">⚽ Montar Time</button></li>
-        </ul>
+      <ul
+        class="nav nav-pills mb-4 justify-content-center"
+        id="pills-tab"
+        role="tablist"
+      >
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#tab-history"
+          >
+            🏆 História
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            data-bs-toggle="pill"
+            data-bs-target="#tab-squad"
+            onclick="carregarJogadoresDisponiveis()"
+          >
+            ⚽ Montar Time
+          </button>
+        </li>
+      </ul>
 
-        <div class="tab-content">
-            
-            <div class="tab-pane fade show active" id="tab-history">
-                <div id="history-container"></div>
-            </div>
-
-            <div class="tab-pane fade" id="tab-squad">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        
-                        <div id="admin-panel" class="card mb-3 admin-panel">
-                            <div class="card-body">
-                                <h6 class="fw-bold text-warning-emphasis">⚙️ Admin: Adicionar Jogador</h6>
-                                <form id="form-admin" class="row g-2">
-                                    <div class="col-12"><input type="text" id="adm-nome" class="form-control form-control-sm" placeholder="Nome" required></div>
-                                    <div class="col-8">
-                                        <select id="adm-posicao" class="form-select form-select-sm" required>
-                                            <option value="" disabled selected>Posição</option>
-                                            <option value="Goleiro">Goleiro</option>
-                                            <option value="Defensor">Defensor</option>
-                                            <option value="Meio Campo">Meio Campo</option>
-                                            <option value="Atacante">Atacante</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-4"><button type="submit" class="btn btn-warning btn-sm w-100">Add</button></div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="card shadow-sm sticky-top" style="top: 20px;">
-                            <div class="card-body">
-                                <h5>Seu Elenco</h5>
-                                <p class="small text-muted">Monte seu time com os craques da história.</p>
-                                
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-success" onclick="salvarTime()">💾 Salvar Time</button>
-                                    <button class="btn btn-primary" onclick="verEscalacao()">📋 Ver Escalação</button>
-                                    <button class="btn btn-outline-secondary" onclick="restaurarSalvo()">🔄 Restaurar Salvo</button>
-                                    <button class="btn btn-outline-danger" onclick="limparEscalacao()">❌ Limpar Campo</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="field-container shadow-lg">
-                            <div class="field-line"></div>
-                            <div class="center-circle"></div>
-                            
-                            <div class="d-flex justify-content-around w-100">
-                                <div class="player-slot" onclick="abrirSelecao('Atacante', 0)"><div class="slot-circle" id="slot-0">?</div><div class="player-name" id="name-0">Atacante</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Atacante', 1)"><div class="slot-circle" id="slot-1">?</div><div class="player-name" id="name-1">Atacante</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Atacante', 2)"><div class="slot-circle" id="slot-2">?</div><div class="player-name" id="name-2">Atacante</div></div>
-                            </div>
-                            <div class="d-flex justify-content-around w-100">
-                                <div class="player-slot" onclick="abrirSelecao('Meio Campo', 3)"><div class="slot-circle" id="slot-3">?</div><div class="player-name" id="name-3">Meia</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Meio Campo', 4)"><div class="slot-circle" id="slot-4">?</div><div class="player-name" id="name-4">Meia</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Meio Campo', 5)"><div class="slot-circle" id="slot-5">?</div><div class="player-name" id="name-5">Meia</div></div>
-                            </div>
-                            <div class="d-flex justify-content-around w-100">
-                                <div class="player-slot" onclick="abrirSelecao('Defensor', 6)"><div class="slot-circle" id="slot-6">?</div><div class="player-name" id="name-6">Lateral</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Defensor', 7)"><div class="slot-circle" id="slot-7">?</div><div class="player-name" id="name-7">Zagueiro</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Defensor', 8)"><div class="slot-circle" id="slot-8">?</div><div class="player-name" id="name-8">Zagueiro</div></div>
-                                <div class="player-slot" onclick="abrirSelecao('Defensor', 9)"><div class="slot-circle" id="slot-9">?</div><div class="player-name" id="name-9">Lateral</div></div>
-                            </div>
-                            <div class="d-flex justify-content-center w-100">
-                                <div class="player-slot" onclick="abrirSelecao('Goleiro', 10)"><div class="slot-circle text-warning" id="slot-10">🧤</div><div class="player-name" id="name-10">Goleiro</div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="tab-history">
+          <div id="history-container"></div>
         </div>
+
+        <div class="tab-pane fade" id="tab-squad">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div id="admin-panel" class="card mb-3 admin-panel">
+                <div class="card-body">
+                  <h6 class="fw-bold text-warning-emphasis">
+                    ⚙️ Admin: Adicionar Jogador
+                  </h6>
+                  <form id="form-admin" class="row g-2">
+                    <div class="col-12">
+                      <input
+                        type="text"
+                        id="adm-nome"
+                        class="form-control form-control-sm"
+                        placeholder="Nome"
+                        required
+                      />
+                    </div>
+                    <div class="col-8">
+                      <select
+                        id="adm-posicao"
+                        class="form-select form-select-sm"
+                        required
+                      >
+                        <option value="" disabled selected>Posição</option>
+                        <option value="Goleiro">Goleiro</option>
+                        <option value="Defensor">Defensor</option>
+                        <option value="Meio Campo">Meio Campo</option>
+                        <option value="Atacante">Atacante</option>
+                      </select>
+                    </div>
+                    <div class="col-4">
+                      <button
+                        type="submit"
+                        class="btn btn-warning btn-sm w-100"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="card shadow-sm sticky-top" style="top: 20px">
+                <div class="card-body">
+                  <h5>Seu Elenco</h5>
+                  <p class="small text-muted">
+                    Monte seu time com os craques da história.
+                  </p>
+
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-success" onclick="salvarTime()">
+                      💾 Salvar Time
+                    </button>
+                    <button class="btn btn-primary" onclick="verEscalacao()">
+                      📋 Ver Escalação
+                    </button>
+                    <button
+                      class="btn btn-outline-secondary"
+                      onclick="restaurarSalvo()"
+                    >
+                      🔄 Restaurar Salvo
+                    </button>
+                    <button
+                      class="btn btn-outline-danger"
+                      onclick="limparEscalacao()"
+                    >
+                      ❌ Limpar Campo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <div class="field-container shadow-lg">
+                <div class="field-line"></div>
+                <div class="center-circle"></div>
+
+                <div class="d-flex justify-content-around w-100">
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Atacante', 0)"
+                  >
+                    <div class="slot-circle" id="slot-0">?</div>
+                    <div class="player-name" id="name-0">Atacante</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Atacante', 1)"
+                  >
+                    <div class="slot-circle" id="slot-1">?</div>
+                    <div class="player-name" id="name-1">Atacante</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Atacante', 2)"
+                  >
+                    <div class="slot-circle" id="slot-2">?</div>
+                    <div class="player-name" id="name-2">Atacante</div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-around w-100">
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Meio Campo', 3)"
+                  >
+                    <div class="slot-circle" id="slot-3">?</div>
+                    <div class="player-name" id="name-3">Meia</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Meio Campo', 4)"
+                  >
+                    <div class="slot-circle" id="slot-4">?</div>
+                    <div class="player-name" id="name-4">Meia</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Meio Campo', 5)"
+                  >
+                    <div class="slot-circle" id="slot-5">?</div>
+                    <div class="player-name" id="name-5">Meia</div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-around w-100">
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Defensor', 6)"
+                  >
+                    <div class="slot-circle" id="slot-6">?</div>
+                    <div class="player-name" id="name-6">Lateral</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Defensor', 7)"
+                  >
+                    <div class="slot-circle" id="slot-7">?</div>
+                    <div class="player-name" id="name-7">Zagueiro</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Defensor', 8)"
+                  >
+                    <div class="slot-circle" id="slot-8">?</div>
+                    <div class="player-name" id="name-8">Zagueiro</div>
+                  </div>
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Defensor', 9)"
+                  >
+                    <div class="slot-circle" id="slot-9">?</div>
+                    <div class="player-name" id="name-9">Lateral</div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center w-100">
+                  <div
+                    class="player-slot"
+                    onclick="abrirSelecao('Goleiro', 10)"
+                  >
+                    <div class="slot-circle text-warning" id="slot-10">🧤</div>
+                    <div class="player-name" id="name-10">Goleiro</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="modal fade" id="modalSelecao" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Escolher Jogador</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body"><div id="lista-selecao" class="list-group"></div></div>
-            </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Escolher Jogador</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div id="lista-selecao" class="list-group"></div>
+          </div>
         </div>
+      </div>
     </div>
 
     <div class="modal fade" id="modalEscalacao" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">🐷 Escalação Atual</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul id="lista-resumo" class="list-group">
-                        </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </div>
-            </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title">🐷 Escalação Atual</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <ul id="lista-resumo" class="list-group"></ul>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = 'http://localhost:3000/api';
-        const user = JSON.parse(localStorage.getItem('user'));
-        const token = localStorage.getItem('token');
-        
-        let timeAtual = new Array(11).fill(null);
-        let todosJogadores = [];
-        let slotFoco = null;
+      const API_URL = "http://localhost:3000/api";
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("token");
 
-        if (!token) window.location.href = 'login.html';
-        document.getElementById('user-display').innerText = `Olá, ${user.name}`;
-        
-        // Admin Check
-        if (user.role && (user.role.includes("ADMIN") || user.role === "ADMIN")) {
-            document.getElementById('admin-panel').style.display = 'block';
-        }
+      let timeAtual = new Array(11).fill(null);
+      let todosJogadores = [];
+      let slotFoco = null;
 
-        // --- INICIALIZAÇÃO ---
-        restaurarSalvo(); // Já carrega o time salvo ao abrir
+      if (!token) window.location.href = "login.html";
+      document.getElementById("user-display").innerText = `Olá, ${user.name}`;
 
-        // --- FUNÇÕES ---
+      // Admin Check
+      if (user.role && (user.role.includes("ADMIN") || user.role === "ADMIN")) {
+        document.getElementById("admin-panel").style.display = "block";
+      }
 
-        function restaurarSalvo() {
-            if (user.myTeam && user.myTeam.length > 0) {
-                timeAtual.fill(null); // Limpa memória
-                user.myTeam.forEach((jogador, index) => {
-                    if (index < 11 && jogador) {
-                        timeAtual[index] = jogador;
-                        atualizarSlotVisual(index, jogador);
-                    }
-                });
-            } else {
-                limparEscalacao();
+      // --- INICIALIZAÇÃO ---
+      restaurarSalvo(); // Já carrega o time salvo ao abrir
+
+      // --- FUNÇÕES ---
+
+      function restaurarSalvo() {
+        if (user.myTeam && user.myTeam.length > 0) {
+          timeAtual.fill(null); // Limpa memória
+          user.myTeam.forEach((jogador, index) => {
+            if (index < 11 && jogador) {
+              timeAtual[index] = jogador;
+              atualizarSlotVisual(index, jogador);
             }
+          });
+        } else {
+          limparEscalacao();
         }
+      }
 
-        function verEscalacao() {
-            const lista = document.getElementById('lista-resumo');
-            lista.innerHTML = '';
-            
-            const posicoes = ["Atacante", "Atacante", "Atacante", "Meio Campo", "Meio Campo", "Meio Campo", "Defensor", "Defensor", "Defensor", "Defensor", "Goleiro"];
-            let temJogador = false;
+      function verEscalacao() {
+        const lista = document.getElementById("lista-resumo");
+        lista.innerHTML = "";
 
-            timeAtual.forEach((jogador, i) => {
-                if (jogador) {
-                    temJogador = true;
-                    lista.innerHTML += `
+        const posicoes = [
+          "Atacante",
+          "Atacante",
+          "Atacante",
+          "Meio Campo",
+          "Meio Campo",
+          "Meio Campo",
+          "Defensor",
+          "Defensor",
+          "Defensor",
+          "Defensor",
+          "Goleiro",
+        ];
+        let temJogador = false;
+
+        timeAtual.forEach((jogador, i) => {
+          if (jogador) {
+            temJogador = true;
+            lista.innerHTML += `
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><strong>${jogador.namePlayer}</strong></span>
                             <span class="badge bg-secondary">${posicoes[i]}</span>
                         </li>
                     `;
-                }
-            });
-
-            if (!temJogador) {
-                lista.innerHTML = '<li class="list-group-item text-center text-muted">Nenhum jogador escalado ainda.</li>';
-            }
-
-            new bootstrap.Modal(document.getElementById('modalEscalacao')).show();
-        }
-
-        async function carregarJogadoresDisponiveis() {
-            try {
-                const res = await fetch(`${API_URL}/players`, { headers: {'Authorization': `Bearer ${token}`} });
-                todosJogadores = await res.json();
-            } catch (err) { console.error(err); }
-        }
-
-        function abrirSelecao(posicao, slotId) {
-            slotFoco = slotId;
-            const listaDiv = document.getElementById('lista-selecao');
-            listaDiv.innerHTML = '<div class="text-center p-2">Carregando...</div>';
-            
-            carregarJogadoresDisponiveis().then(() => {
-                listaDiv.innerHTML = '';
-                const filtrados = todosJogadores.filter(p => p.positionPlayer === posicao);
-                
-                if(filtrados.length === 0) listaDiv.innerHTML = '<div class="p-2">Nenhum jogador encontrado.</div>';
-
-                filtrados.forEach(j => {
-                    const btn = document.createElement('button');
-                    btn.className = 'list-group-item list-group-item-action';
-                    btn.innerHTML = `<strong>${j.namePlayer}</strong>`;
-                    btn.onclick = () => escolherJogador(j);
-                    listaDiv.appendChild(btn);
-                });
-                new bootstrap.Modal(document.getElementById('modalSelecao')).show();
-            });
-        }
-
-        function escolherJogador(jogador) {
-            timeAtual[slotFoco] = jogador;
-            atualizarSlotVisual(slotFoco, jogador);
-            bootstrap.Modal.getInstance(document.getElementById('modalSelecao')).hide();
-        }
-
-        function atualizarSlotVisual(index, jogador) {
-            const slot = document.getElementById(`slot-${index}`);
-            const name = document.getElementById(`name-${index}`);
-            slot.innerText = "⚽";
-            slot.classList.add('bg-selected');
-            name.innerText = jogador.namePlayer;
-        }
-
-        function limparEscalacao() {
-            timeAtual.fill(null);
-            for(let i=0; i<11; i++) {
-                document.getElementById(`slot-${i}`).innerText = i===10?'🧤':'?';
-                document.getElementById(`slot-${i}`).classList.remove('bg-selected');
-                document.getElementById(`name-${i}`).innerText = i===10?'Goleiro':'Posição';
-            }
-        }
-
-        async function salvarTime() {
-            const playerIds = timeAtual.filter(p => p !== null).map(p => p._id);
-            try {
-                const res = await fetch(`${API_URL}/users/team`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ playerIds })
-                });
-
-                if (res.ok) {
-                    const novoTime = await res.json();
-                    user.myTeam = novoTime;
-                    localStorage.setItem('user', JSON.stringify(user));
-                    alert('Time salvo com sucesso! 🐷');
-                    verEscalacao(); // Abre a lista automaticamente ao salvar!
-                } else {
-                    alert('Erro ao salvar.');
-                }
-            } catch (error) { console.error(error); alert('Erro conexão'); }
-        }
-
-        // --- ADMIN ---
-        document.getElementById('form-admin').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const nome = document.getElementById('adm-nome').value;
-            const posicao = document.getElementById('adm-posicao').value;
-            try {
-                const res = await fetch(`${API_URL}/players`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ namePlayer: nome, positionPlayer: posicao })
-                });
-                if (res.ok) { alert('Adicionado!'); document.getElementById('form-admin').reset(); }
-                else { const d = await res.json(); alert(d.error); }
-            } catch (error) { alert('Erro'); }
+          }
         });
 
-        // --- HISTÓRIA MOCK ---
-        const historyData = [
-            { year: 2023, titles: ["Brasileirão", "Paulista", "Supercopa"], summary: "O ano do Dodeca!", shirt1: "https://via.placeholder.com/100?text=2023_1", shirt2: "https://via.placeholder.com/100?text=2023_2" },
-            { year: 2022, titles: ["Brasileirão", "Paulista", "Recopa"], summary: "O ano do Hendeca!", shirt1: "https://via.placeholder.com/100?text=2022_1", shirt2: "https://via.placeholder.com/100?text=2022_2" },
-             { year: 2021, titles: ["Libertadores"], summary: "Glória Eterna Tricampeã!", shirt1: "https://via.placeholder.com/100?text=2021_1", shirt2: "https://via.placeholder.com/100?text=2021_2" }
-        ];
-        const histContainer = document.getElementById('history-container');
-        historyData.forEach(h => {
-            histContainer.innerHTML += `
+        if (!temJogador) {
+          lista.innerHTML =
+            '<li class="list-group-item text-center text-muted">Nenhum jogador escalado ainda.</li>';
+        }
+
+        new bootstrap.Modal(document.getElementById("modalEscalacao")).show();
+      }
+
+      async function carregarJogadoresDisponiveis() {
+        try {
+          const res = await fetch(`${API_URL}/players`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          todosJogadores = await res.json();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function abrirSelecao(posicao, slotId) {
+        slotFoco = slotId;
+        const listaDiv = document.getElementById("lista-selecao");
+        listaDiv.innerHTML = '<div class="text-center p-2">Carregando...</div>';
+
+        carregarJogadoresDisponiveis().then(() => {
+          listaDiv.innerHTML = "";
+          const filtrados = todosJogadores.filter(
+            (p) => p.positionPlayer === posicao
+          );
+
+          if (filtrados.length === 0)
+            listaDiv.innerHTML =
+              '<div class="p-2">Nenhum jogador encontrado.</div>';
+
+          filtrados.forEach((j) => {
+            const btn = document.createElement("button");
+            btn.className = "list-group-item list-group-item-action";
+            btn.innerHTML = `<strong>${j.namePlayer}</strong>`;
+            btn.onclick = () => escolherJogador(j);
+            listaDiv.appendChild(btn);
+          });
+          new bootstrap.Modal(document.getElementById("modalSelecao")).show();
+        });
+      }
+
+      function escolherJogador(jogador) {
+        timeAtual[slotFoco] = jogador;
+        atualizarSlotVisual(slotFoco, jogador);
+        bootstrap.Modal.getInstance(
+          document.getElementById("modalSelecao")
+        ).hide();
+      }
+
+      function atualizarSlotVisual(index, jogador) {
+        const slot = document.getElementById(`slot-${index}`);
+        const name = document.getElementById(`name-${index}`);
+        slot.innerText = "⚽";
+        slot.classList.add("bg-selected");
+        name.innerText = jogador.namePlayer;
+      }
+
+      function limparEscalacao() {
+        timeAtual.fill(null);
+        for (let i = 0; i < 11; i++) {
+          document.getElementById(`slot-${i}`).innerText =
+            i === 10 ? "🧤" : "?";
+          document.getElementById(`slot-${i}`).classList.remove("bg-selected");
+          document.getElementById(`name-${i}`).innerText =
+            i === 10 ? "Goleiro" : "Posição";
+        }
+      }
+
+      async function salvarTime() {
+        const playerIds = timeAtual.filter((p) => p !== null).map((p) => p._id);
+        try {
+          const res = await fetch(`${API_URL}/users/team`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ playerIds }),
+          });
+
+          if (res.ok) {
+            const novoTime = await res.json();
+            user.myTeam = novoTime;
+            localStorage.setItem("user", JSON.stringify(user));
+            alert("Time salvo com sucesso! 🐷");
+            verEscalacao(); // Abre a lista automaticamente ao salvar!
+          } else {
+            alert("Erro ao salvar.");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Erro conexão");
+        }
+      }
+
+      // --- ADMIN ---
+      document
+        .getElementById("form-admin")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const nome = document.getElementById("adm-nome").value;
+          const posicao = document.getElementById("adm-posicao").value;
+          try {
+            const res = await fetch(`${API_URL}/players`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                namePlayer: nome,
+                positionPlayer: posicao,
+              }),
+            });
+            if (res.ok) {
+              alert("Adicionado!");
+              document.getElementById("form-admin").reset();
+            } else {
+              const d = await res.json();
+              alert(d.error);
+            }
+          } catch (error) {
+            alert("Erro");
+          }
+        });
+
+      // --- HISTÓRIA MOCK ---
+      const historyData = [
+        {
+          year: 2023,
+          titles: ["Brasileirão", "Paulista", "Supercopa"],
+          summary: "O ano do Dodeca!",
+          shirt1: "https://via.placeholder.com/100?text=2023_1",
+          shirt2: "https://via.placeholder.com/100?text=2023_2",
+        },
+        {
+          year: 2022,
+          titles: ["Brasileirão", "Paulista", "Recopa"],
+          summary: "O ano do Hendeca!",
+          shirt1: "https://via.placeholder.com/100?text=2022_1",
+          shirt2: "https://via.placeholder.com/100?text=2022_2",
+        },
+        {
+          year: 2021,
+          titles: ["Libertadores"],
+          summary: "Glória Eterna Tricampeã!",
+          shirt1: "https://via.placeholder.com/100?text=2021_1",
+          shirt2: "https://via.placeholder.com/100?text=2021_2",
+        },
+        {
+          year: 2020,
+          titles: ["Libertadores", "Paulista", "Copa do Brasil"],
+          summary: "A América fica verde pela segunda vez!<br>Abel chega",
+          shirt1: "https://static.netshoes.com.br/produtos/camisa-palmeiras-i-2021-sn-torcedor-puma-masculina/60/NWG-0855-060/NWG-0855-060_zoom1.jpg?ts=1763723678",
+          shirt2: "https://via.placeholder.com/100?text=2021_2",
+        },
+      ];
+      const histContainer = document.getElementById("history-container");
+      historyData.forEach((h) => {
+        histContainer.innerHTML += `
                 <div class="card mb-3 shadow-sm border-success border-start border-4">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h3 class="text-success fw-bold">${h.year}</h3>
-                            <div>${h.titles.map(t=>`<span class="badge bg-warning text-dark me-1">🏆 ${t}</span>`).join('')}</div>
+                            <div>${h.titles
+                              .map(
+                                (t) =>
+                                  `<span class="badge bg-warning text-dark me-1">🏆 ${t}</span>`
+                              )
+                              .join("")}</div>
                         </div>
                         <p>${h.summary}</p>
                         <div class="d-flex gap-3 mt-3">
-                           <img src="${h.shirt1}" class="img-thumbnail" style="height: 80px;">
-                           <img src="${h.shirt2}" class="img-thumbnail" style="height: 80px;">
+                           <img src="${
+                             h.shirt1
+                           }" class="img-thumbnail" style="height: 80px;">
+                           <img src="${
+                             h.shirt2
+                           }" class="img-thumbnail" style="height: 80px;">
                         </div>
                     </div>
                 </div>`;
-        });
+      });
 
-        function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+      function logout() {
+        localStorage.clear();
+        window.location.href = "login.html";
+      }
     </script>
-</body>
+  </body>
 </html>
