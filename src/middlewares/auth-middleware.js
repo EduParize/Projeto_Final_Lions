@@ -35,8 +35,9 @@ export function requireRole(...allowedRoles) {
       return;
     }
 
-    const userRoles = Array.isArray(req.user.roles) ? req.user.roles : [];
-    const hasPermission = allowedRoles.some((role) => userRoles.includes(role));
+    const userRole = req.user.role; 
+    const userRolesArray = Array.isArray(userRole) ? userRole : [userRole];
+    const hasPermission = allowedRoles.some((role) => userRolesArray.includes(role));
 
     if (!hasPermission) {
       throw createError('Acesso negado.', 403);
