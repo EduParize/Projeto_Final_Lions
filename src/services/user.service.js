@@ -23,7 +23,7 @@ export default {
       name: data.name.trim(),
       email: data.email.trim().toLowerCase(),
       password: hashedPassword,
-      role: data.role || "USER",
+      role: data.role || ["USER"],
     });
   },
   async loginUser(email, password) {
