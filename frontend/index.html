@@ -9,23 +9,25 @@
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
 
     <style>
+      /* --- PALETA DE CORES OFICIAL --- */
       :root {
         --verde-palmeiras: #006437;
         --verde-escuro: #004526;
+        --dourado: #d4af37; /* Dourado dos títulos */
         --branco: #ffffff;
-        --cinza-fundo: #f0f2f5;
-        --dourado: #d4af37; /* Cor dos títulos */
+        --cinza-fundo: #f4f7f6;
       }
 
       body {
         background-color: var(--cinza-fundo);
         font-family: "Poppins", sans-serif;
         color: #333;
+        overflow-x: hidden;
       }
 
       /* --- HEADER --- */
@@ -38,27 +40,188 @@
         color: white;
         padding: 20px;
         border-bottom: 4px solid var(--dourado);
+        box-shadow: 0 4px 15px rgba(0, 100, 55, 0.2);
       }
 
-      /* --- ABAS (NAV PILLS) --- */
+      /* --- NAV PILLS (Abas) --- */
       .nav-pills .nav-link {
         color: var(--verde-palmeiras);
         font-weight: 600;
         border-radius: 50px;
-        padding: 10px 25px;
-        transition: all 0.3s;
+        padding: 10px 30px;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        margin: 0 5px;
       }
       .nav-pills .nav-link:hover {
-        background-color: rgba(0, 100, 55, 0.1);
+        background-color: #e9f5ec;
+        transform: translateY(-2px);
       }
       .nav-pills .nav-link.active {
         background-color: var(--verde-palmeiras) !important;
+        color: white !important;
         box-shadow: 0 4px 10px rgba(0, 100, 55, 0.3);
       }
 
-      /* --- CAMPO DE FUTEBOL (Efeito Gramado) --- */
+      /* =========================================
+           NOVO CSS DA HISTÓRIA (TIMELINE PREMIUM)
+        ========================================= */
+      #history-container {
+        position: relative;
+        padding-left: 60px; /* Espaço para a linha e bolinhas */
+        padding-right: 10px;
+      }
+
+      /* A Linha Vertical Central */
+      #history-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 28px; /* Posição exata da linha */
+        width: 4px;
+        background: linear-gradient(
+          to bottom,
+          var(--verde-palmeiras),
+          var(--dourado) 80%,
+          var(--verde-palmeiras)
+        );
+        border-radius: 2px;
+        z-index: 0;
+      }
+
+      /* Wrapper do Card (para posicionar o ponto) */
+      .timeline-wrapper {
+        position: relative;
+        margin-bottom: 50px; /* Espaço entre os anos */
+      }
+
+      /* O Ponto Conector (Bolinha Dourada) */
+      .timeline-dot {
+        position: absolute;
+        left: -44px; /* Alinha com a linha vertical */
+        top: 25px;
+        width: 28px;
+        height: 28px;
+        background-color: var(--dourado);
+        border: 4px solid white;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px var(--verde-palmeiras); /* Anel verde em volta */
+        z-index: 1;
+        transition: transform 0.3s ease;
+      }
+      .timeline-wrapper:hover .timeline-dot {
+        transform: scale(1.2); /* Bolinha cresce ao passar o mouse */
+      }
+
+      /* O Card do Ano */
+      .timeline-card {
+        background: white;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+        border-left: 6px solid var(--verde-palmeiras); /* Borda lateral verde */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .timeline-card:hover {
+        transform: translateY(-8px) translateX(5px);
+        box-shadow: 0 20px 40px rgba(0, 100, 55, 0.15);
+      }
+
+      /* Marca d'água sutil de fundo (opcional, removi para limpar o visual) */
+      /* .timeline-card::after { content: '🐷'; position: absolute; top: -20px; right: -20px; font-size: 150px; opacity: 0.03; pointer-events: none; } */
+
+      /* Título do Ano */
+      .history-year-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--verde-palmeiras);
+        line-height: 1;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
+      }
+
+      /* Badges dos Títulos */
+      .title-badge {
+        background: linear-gradient(45deg, var(--dourado), #eacda3);
+        color: var(--verde-escuro);
+        font-weight: 700;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        display: inline-block;
+        margin: 3px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Texto do Resumo */
+      .history-summary {
+        color: #555;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-top: 20px;
+        padding-left: 15px;
+        border-left: 3px solid #eee;
+      }
+
+      /* Área das Camisas (Vitrines) */
+      .shirts-showcase {
+        display: flex;
+        gap: 25px;
+        margin-top: 35px;
+        justify-content: center;
+      }
+
+      .shirt-box {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 20px;
+        text-align: center;
+        border: 3px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        flex: 1; /* Ocupam o mesmo espaço */
+        max-width: 200px;
+      }
+
+      .shirt-box:hover {
+        border-color: var(--dourado);
+        background: white;
+        box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        transform: translateY(-5px);
+      }
+
+      .shirt-label {
+        font-weight: 700;
+        color: var(--verde-palmeiras);
+        display: block;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+      }
+
+      .shirt-img-premium {
+        height: 140px; /* Camisas maiores */
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(
+          0 8px 10px rgba(0, 0, 0, 0.15)
+        ); /* Sombra realista na camisa */
+        transition: transform 0.3s;
+      }
+      .shirt-box:hover .shirt-img-premium {
+        transform: scale(1.05);
+      }
+
+      /* --- CSS DO CAMPO E ADMIN (Mantido do anterior) --- */
       .field-container {
-        /* Gramado com listras */
         background: repeating-linear-gradient(
           0deg,
           #2e7d32,
@@ -77,8 +240,6 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         overflow: hidden;
       }
-
-      /* Linhas do Campo */
       .field-line {
         border-top: 2px solid rgba(255, 255, 255, 0.6);
         width: 100%;
@@ -95,10 +256,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: rgba(255, 255, 255, 0.05); /* Leve brilho no centro */
+        background: rgba(255, 255, 255, 0.05);
       }
-
-      /* --- SLOTS DE JOGADORES --- */
       .player-slot {
         text-align: center;
         cursor: pointer;
@@ -123,14 +282,11 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         font-weight: bold;
       }
-
-      /* Slot Preenchido */
       .bg-selected {
         background: var(--verde-palmeiras) !important;
         color: white !important;
         border-color: var(--dourado) !important;
       }
-
       .player-name {
         background-color: rgba(0, 0, 0, 0.8);
         color: white;
@@ -143,60 +299,6 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
-
-      /* --- TIMELINE DE HISTÓRIA --- */
-      #history-container {
-        position: relative;
-        padding-left: 20px;
-      }
-      /* Linha vertical */
-      #history-container::before {
-        content: "";
-        position: absolute;
-        left: 35px; /* Ajuste conforme a margem do card */
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: var(--verde-palmeiras);
-        opacity: 0.3;
-      }
-
-      .year-card {
-        border: none;
-        border-radius: 15px;
-        margin-bottom: 30px;
-        position: relative;
-        transition: transform 0.3s;
-        overflow: hidden;
-        background: white;
-      }
-      .year-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-      }
-      /* Bolinha na timeline */
-      .year-card::before {
-        content: "";
-        position: absolute;
-        left: -28px;
-        top: 25px;
-        width: 16px;
-        height: 16px;
-        background: var(--dourado);
-        border: 3px solid white;
-        border-radius: 50%;
-        box-shadow: 0 0 0 3px var(--verde-palmeiras);
-        z-index: 1;
-      }
-
-      .card-header-year {
-        background-color: white;
-        border-bottom: 2px solid #f0f0f0;
-        padding-bottom: 10px;
-        margin-bottom: 15px;
-      }
-
-      /* --- ADMIN PANEL --- */
       .admin-panel {
         border: 2px dashed var(--dourado);
         background: #fffbf0;
@@ -212,8 +314,6 @@
         background-color: #bfa140;
         color: white;
       }
-
-      /* --- BOTÕES GERAIS --- */
       .btn-success {
         background-color: var(--verde-palmeiras);
         border: none;
@@ -238,18 +338,22 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
           "
         >
           🐷
         </div>
         <div>
-          <h5 class="m-0 fw-bold">Verdão Info</h5>
-          <small id="user-display" style="opacity: 0.9">Carregando...</small>
+          <h5 class="m-0 fw-bold" style="letter-spacing: 0.5px">Verdão Info</h5>
+          <small id="user-display" style="opacity: 0.9; font-weight: 300"
+            >Carregando...</small
+          >
         </div>
       </div>
       <button
         onclick="logout()"
-        class="btn btn-outline-light btn-sm rounded-pill px-3"
+        class="btn btn-outline-light btn-sm rounded-pill px-4 fw-bold"
+        style="border-width: 2px"
       >
         Sair
       </button>
@@ -257,22 +361,22 @@
 
     <div class="container mt-5 mb-5">
       <ul
-        class="nav nav-pills mb-5 justify-content-center gap-3"
+        class="nav nav-pills mb-5 justify-content-center"
         id="pills-tab"
         role="tablist"
       >
         <li class="nav-item">
           <button
-            class="nav-link active shadow-sm"
+            class="nav-link active"
             data-bs-toggle="pill"
             data-bs-target="#tab-history"
           >
-            🏆 História & Títulos
+            🏆 História & Glórias
           </button>
         </li>
         <li class="nav-item">
           <button
-            class="nav-link shadow-sm"
+            class="nav-link"
             data-bs-toggle="pill"
             data-bs-target="#tab-squad"
             onclick="carregarJogadoresDisponiveis()"
@@ -284,7 +388,11 @@
 
       <div class="tab-content">
         <div class="tab-pane fade show active" id="tab-history">
-          <div id="history-container" class="ms-3"></div>
+          <div class="row justify-content-center">
+            <div class="col-lg-10">
+              <div id="history-container"></div>
+            </div>
+          </div>
         </div>
 
         <div class="tab-pane fade" id="tab-squad">
@@ -329,7 +437,7 @@
 
               <div
                 class="card shadow border-0 rounded-4 sticky-top"
-                style="top: 20px"
+                style="top: 20px; background: white"
               >
                 <div class="card-body p-4">
                   <h4
@@ -344,28 +452,29 @@
 
                   <div class="d-grid gap-3">
                     <button
-                      class="btn btn-success py-2 fw-bold shadow-sm"
+                      class="btn btn-success py-3 fw-bold shadow-sm rounded-pill"
                       onclick="salvarTime()"
+                      style="font-size: 1.1rem"
                     >
                       💾 Salvar Time
                     </button>
                     <button
-                      class="btn btn-primary py-2 fw-bold shadow-sm"
-                      style="background-color: #0d6efd"
+                      class="btn btn-primary py-2 fw-bold shadow-sm rounded-pill"
+                      style="background-color: #0d6efd; border: none"
                       onclick="verEscalacao()"
                     >
                       📋 Ver Escalação
                     </button>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 mt-2">
                       <button
-                        class="btn btn-outline-secondary flex-grow-1"
+                        class="btn btn-outline-secondary flex-grow-1 rounded-pill border-2 fw-bold"
                         onclick="restaurarSalvo()"
                         title="Desfazer alterações"
                       >
                         🔄 Restaurar
                       </button>
                       <button
-                        class="btn btn-outline-danger flex-grow-1"
+                        class="btn btn-outline-danger flex-grow-1 rounded-pill border-2 fw-bold"
                         onclick="limparEscalacao()"
                         title="Limpar campo"
                       >
@@ -381,7 +490,6 @@
               <div class="field-container">
                 <div class="field-line"></div>
                 <div class="center-circle"></div>
-
                 <div class="d-flex justify-content-around w-100 px-4">
                   <div
                     class="player-slot"
@@ -483,10 +591,13 @@
     </div>
 
     <div class="modal fade" id="modalSelecao" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 border-0 shadow">
-          <div class="modal-header bg-success text-white rounded-top-4">
-            <h5 class="modal-title fw-bold">Escolher Craque</h5>
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div
+            class="modal-header text-white rounded-top-4 py-3"
+            style="background: var(--verde-palmeiras)"
+          >
+            <h5 class="modal-title fw-bold">🐷 Escolher Craque</h5>
             <button
               type="button"
               class="btn-close btn-close-white"
@@ -494,7 +605,7 @@
             ></button>
           </div>
           <div class="modal-body p-0">
-            <div id="lista-selecao" class="list-group list-group-flush"></div>
+            <div id="lista-selecao"></div>
           </div>
         </div>
       </div>
@@ -502,10 +613,16 @@
 
     <div class="modal fade" id="modalEscalacao" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
           <div
-            class="modal-header text-white rounded-top-4"
-            style="background: var(--verde-palmeiras)"
+            class="modal-header text-white rounded-top-4 py-3"
+            style="
+              background: linear-gradient(
+                to right,
+                var(--verde-palmeiras),
+                var(--verde-escuro)
+              );
+            "
           >
             <h5 class="modal-title fw-bold">🐷 Escalação Oficial</h5>
             <button
@@ -514,11 +631,18 @@
               data-bs-dismiss="modal"
             ></button>
           </div>
-          <div class="modal-body">
-            <ul id="lista-resumo" class="list-group list-group-flush"></ul>
+          <div class="modal-body p-4">
+            <ul
+              id="lista-resumo"
+              class="list-group list-group-flush rounded-3"
+            ></ul>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-light rounded-pill px-4 fw-bold shadow-sm"
+              data-bs-dismiss="modal"
+            >
               Fechar
             </button>
           </div>
@@ -535,16 +659,16 @@
       let timeAtual = new Array(11).fill(null);
       let todosJogadores = [];
       let slotFoco = null;
+      // Variável global para guardar a lista filtrada da posição atual (Busca)
+      let jogadoresDaPosicaoAtual = [];
 
       if (!token) window.location.href = "login.html";
       document.getElementById("user-display").innerText = `Olá, ${user.name}`;
 
-      // Admin Check
       if (user.role && (user.role.includes("ADMIN") || user.role === "ADMIN")) {
         document.getElementById("admin-panel").style.display = "block";
       }
 
-      // --- INICIALIZAÇÃO ---
       restaurarSalvo();
 
       // --- FUNÇÕES ---
@@ -585,9 +709,9 @@
           if (jogador) {
             temJogador = true;
             lista.innerHTML += `
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="fw-bold text-success">${jogador.namePlayer}</span>
-                            <span class="badge rounded-pill text-bg-light border">${posicoes[i]}</span>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3" style="border-bottom-color: #eee;">
+                            <span class="fw-bold" style="color: var(--verde-palmeiras); font-size: 1.1rem;">${jogador.namePlayer}</span>
+                            <span class="badge rounded-pill text-bg-light border shadow-sm text-uppercase" style="font-size: 0.75rem; letter-spacing:1px;">${posicoes[i]}</span>
                         </li>
                     `;
           }
@@ -595,7 +719,7 @@
 
         if (!temJogador)
           lista.innerHTML =
-            '<li class="list-group-item text-center text-muted py-4">Nenhum jogador escalado ainda.</li>';
+            '<li class="list-group-item text-center text-muted py-5" style="font-style: italic;">Nenhum jogador escalado ainda.</li>';
         new bootstrap.Modal(document.getElementById("modalEscalacao")).show();
       }
 
@@ -610,65 +734,75 @@
         }
       }
 
-      // Variável global para guardar a lista filtrada da posição atual
-let jogadoresDaPosicaoAtual = [];
+      // --- FUNÇÃO DE BUSCA NO MODAL (Atualizada) ---
+      function abrirSelecao(posicao, slotId) {
+        slotFoco = slotId;
+        const listaDiv = document.getElementById("lista-selecao");
 
-function abrirSelecao(posicao, slotId) {
-    slotFoco = slotId;
-    const listaDiv = document.getElementById('lista-selecao');
-    
-    // HTML do Input de Busca + Container da Lista
-    listaDiv.innerHTML = `
-        <div class="p-3 bg-light border-bottom sticky-top">
-            <input type="text" id="input-busca-jogador" class="form-control" placeholder="🔍 Buscar por nome..." onkeyup="filtrarJogadoresNaTela()">
-        </div>
-        <div id="lista-jogadores-render" class="list-group list-group-flush">
-            <div class="text-center p-4 text-muted">Carregando craques...</div>
-        </div>
-    `;
-    
-    carregarJogadoresDisponiveis().then(() => {
-        // Filtra pela posição (Atacante, Goleiro, etc)
-        jogadoresDaPosicaoAtual = todosJogadores.filter(p => p.positionPlayer === posicao);
-        
-        // Renderiza a lista inicial
-        renderizarLista(jogadoresDaPosicaoAtual);
-    });
-    
-    new bootstrap.Modal(document.getElementById('modalSelecao')).show();
-}
+        // HTML do Input de Busca + Container da Lista
+        listaDiv.innerHTML = `
+                <div class="p-4 bg-light border-bottom sticky-top">
+                    <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden">
+                        <span class="input-group-text bg-white border-0 ps-4" style="color: var(--verde-palmeiras);">🔍</span>
+                        <input type="text" id="input-busca-jogador" class="form-control border-0" placeholder="Buscar ${posicao.toLowerCase()} por nome..." onkeyup="filtrarJogadoresNaTela()" style="box-shadow: none;">
+                    </div>
+                </div>
+                <div id="lista-jogadores-render" class="list-group list-group-flush p-3">
+                    <div class="text-center p-5 text-muted">Carregando craques...</div>
+                </div>
+            `;
 
-// Função que desenha a lista na tela
-function renderizarLista(lista) {
-    const container = document.getElementById('lista-jogadores-render');
-    container.innerHTML = '';
+        carregarJogadoresDisponiveis().then(() => {
+          jogadoresDaPosicaoAtual = todosJogadores.filter(
+            (p) => p.positionPlayer === posicao
+          );
+          renderizarLista(jogadoresDaPosicaoAtual);
+        });
 
-    if(lista.length === 0) {
-        container.innerHTML = '<div class="p-4 text-center text-muted">Nenhum jogador encontrado.</div>';
-        return;
-    }
+        new bootstrap.Modal(document.getElementById("modalSelecao")).show();
+      }
 
-    lista.forEach(j => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action py-3 fw-bold';
-        btn.innerHTML = `${j.namePlayer}`;
-        btn.style.color = 'var(--verde-palmeiras)';
-        btn.onclick = () => escolherJogador(j);
-        container.appendChild(btn);
-    });
-}
+      function renderizarLista(lista) {
+        const container = document.getElementById("lista-jogadores-render");
+        container.innerHTML = "";
 
-// Função chamada cada vez que digita uma letra
-function filtrarJogadoresNaTela() {
-    const termo = document.getElementById('input-busca-jogador').value.toLowerCase();
-    
-    // Filtra a lista da posição baseada no que foi digitado
-    const filtrados = jogadoresDaPosicaoAtual.filter(j => 
-        j.namePlayer.toLowerCase().includes(termo)
-    );
-    
-    renderizarLista(filtrados);
-}
+        if (lista.length === 0) {
+          container.innerHTML =
+            '<div class="p-5 text-center text-muted fs-5">Nenhum jogador encontrado. 🙁</div>';
+          return;
+        }
+
+        lista.forEach((j) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "list-group-item list-group-item-action py-3 mb-2 rounded-4 border shadow-sm d-flex align-items-center";
+          btn.style.transition = "all 0.2s";
+          btn.innerHTML = `
+                    <div style="width: 40px; height: 40px; background: var(--cinza-fundo); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.2rem;">🏃</div>
+                    <span class="fw-bold fs-5" style="color: var(--verde-palmeiras);">${j.namePlayer}</span>
+                `;
+          btn.onmouseover = () => {
+            btn.style.transform = "scale(1.02)";
+            btn.style.borderColor = "var(--dourado)";
+          };
+          btn.onmouseout = () => {
+            btn.style.transform = "scale(1)";
+            btn.style.borderColor = "#dee2e6";
+          };
+          btn.onclick = () => escolherJogador(j);
+          container.appendChild(btn);
+        });
+      }
+
+      function filtrarJogadoresNaTela() {
+        const termo = document
+          .getElementById("input-busca-jogador")
+          .value.toLowerCase();
+        const filtrados = jogadoresDaPosicaoAtual.filter((j) =>
+          j.namePlayer.toLowerCase().includes(termo)
+        );
+        renderizarLista(filtrados);
+      }
 
       function escolherJogador(jogador) {
         timeAtual[slotFoco] = jogador;
@@ -688,7 +822,6 @@ function filtrarJogadoresNaTela() {
 
       function limparEscalacao() {
         timeAtual.fill(null);
-        // Números das camisas padrão (fictícios para layout)
         const numeros = [7, 9, 11, 8, 10, 5, 2, 3, 4, 6, "🧤"];
         const nomes = [
           "Atacante",
@@ -703,7 +836,6 @@ function filtrarJogadoresNaTela() {
           "Lateral",
           "Goleiro",
         ];
-
         for (let i = 0; i < 11; i++) {
           const slot = document.getElementById(`slot-${i}`);
           slot.innerText = numeros[i];
@@ -723,7 +855,6 @@ function filtrarJogadoresNaTela() {
             },
             body: JSON.stringify({ playerIds }),
           });
-
           if (res.ok) {
             const novoTime = await res.json();
             user.myTeam = novoTime;
@@ -770,31 +901,33 @@ function filtrarJogadoresNaTela() {
           }
         });
 
-      // --- HISTÓRIA ---
+      // =========================================
+      // DADOS DA HISTÓRIA (Adicione os seus aqui)
+      // =========================================
       const historyData = [
         {
           year: 2023,
           titles: ["Brasileirão", "Paulista", "Supercopa"],
           summary:
-            "O ano do Dodeca! O Verdão mostrou força mental e consistência para buscar o título brasileiro em uma arrancada histórica.",
-          shirt1: "https://via.placeholder.com/100?text=2023_1",
-          shirt2: "https://via.placeholder.com/100?text=2023_2",
+            "O ano do Dodeca! O Verdão mostrou força mental e consistência para buscar o título brasileiro em uma arrancada histórica, superando adversidades e provando a força da Terceira Academia.",
+          shirt1: "https://via.placeholder.com/150?text=2023+HOME", // Coloque os links reais aqui
+          shirt2: "https://via.placeholder.com/150?text=2023+AWAY",
         },
         {
           year: 2022,
           titles: ["Brasileirão", "Paulista", "Recopa"],
           summary:
-            "O ano do Hendeca! Uma campanha irretocável com apenas três derrotas no campeonato inteiro.",
-          shirt1: "https://via.placeholder.com/100?text=2022_1",
-          shirt2: "https://via.placeholder.com/100?text=2022_2",
+            "O ano do Hendeca! Uma campanha irretocável com apenas três derrotas no campeonato inteiro, dominando de ponta a ponta.",
+          shirt1: "https://via.placeholder.com/150?text=2022+HOME",
+          shirt2: "https://via.placeholder.com/150?text=2022+AWAY",
         },
         {
           year: 2021,
-          titles: ["Libertadores"],
+          titles: ["Libertadores da América"],
           summary:
-            "Glória Eterna Tricampeã! Vencemos o Flamengo em Montevidéu com gol de Deyverson na prorrogação.",
-          shirt1: "https://via.placeholder.com/100?text=2021_1",
-          shirt2: "https://via.placeholder.com/100?text=2021_2",
+            "Glória Eterna Tricampeã! Vencemos o Flamengo em Montevidéu com gol histórico de Deyverson na prorrogação. O continente pintado de verde novamente.",
+          shirt1: "https://via.placeholder.com/150?text=2021+HOME",
+          shirt2: "https://via.placeholder.com/150?text=2021+AWAY",
         },
         {
           year: 2020,
@@ -803,41 +936,58 @@ function filtrarJogadoresNaTela() {
           shirt1: "https://static.netshoes.com.br/produtos/camisa-palmeiras-i-2021-sn-torcedor-puma-masculina/60/NWG-0855-060/NWG-0855-060_zoom1.jpg?ts=1763723678",
           shirt2: "https://via.placeholder.com/100?text=2021_2",
         },
+        {
+          year: 1999,
+          titles: ["Libertadores da América"],
+          summary:
+            "A primeira Glória Eterna! Sob o comando de Felipão e com São Marcos operando milagres nos pênaltis, o Palmeiras conquistou a América.",
+          shirt1: "https://via.placeholder.com/150?text=1999+HOME",
+          shirt2: "https://via.placeholder.com/150?text=1999+GK",
+        },
       ];
 
+      // INJEÇÃO DOS CARDS NO NOVO LAYOUT PREMIUM
       const histContainer = document.getElementById("history-container");
       historyData.forEach((h) => {
         histContainer.innerHTML += `
-                <div class="card year-card shadow-sm">
-                    <div class="card-body">
-                        <div class="card-header-year d-flex justify-content-between align-items-center">
-                            <h2 class="m-0 fw-bold" style="color: var(--verde-palmeiras);">${
-                              h.year
-                            }</h2>
-                            <div>${h.titles
-                              .map(
-                                (t) =>
-                                  `<span class="badge text-bg-warning text-white me-1 shadow-sm">🏆 ${t}</span>`
-                              )
-                              .join("")}</div>
+                <div class="timeline-wrapper">
+                    <div class="timeline-dot"></div> <div class="timeline-card">
+                        
+                        <div class="d-md-flex justify-content-between align-items-start mb-4">
+                            <div>
+                                <h2 class="history-year-title">${h.year}</h2>
+                                <div class="mt-2">
+                                    ${h.titles
+                                      .map(
+                                        (t) =>
+                                          `<span class="title-badge">🏆 ${t}</span>`
+                                      )
+                                      .join("")}
+                                </div>
+                            </div>
                         </div>
-                        <p class="text-muted" style="line-height: 1.6;">${
-                          h.summary
-                        }</p>
-                        <div class="d-flex gap-3 mt-4 justify-content-center">
-                           <div class="text-center">
-                                <small class="fw-bold text-success d-block mb-1">Uniforme I</small>
+                        
+                        <p class="history-summary">${h.summary}</p>
+                        
+                        <div class="shirts-showcase">
+                           <div class="shirt-box">
+                                <span class="shirt-label">Uniforme Principal</span>
                                 <img src="${
                                   h.shirt1
-                                }" class="img-thumbnail rounded-3 shadow-sm" style="height: 80px; border-color: var(--verde-palmeiras);">
+                                }" class="shirt-img-premium" alt="Camisa 1 ${
+          h.year
+        }">
                            </div>
-                           <div class="text-center">
-                                <small class="fw-bold text-success d-block mb-1">Uniforme II</small>
+                           <div class="shirt-box">
+                                <span class="shirt-label">Uniforme Reserva</span>
                                 <img src="${
                                   h.shirt2
-                                }" class="img-thumbnail rounded-3 shadow-sm" style="height: 80px; border-color: white;">
+                                }" class="shirt-img-premium" alt="Camisa 2 ${
+          h.year
+        }">
                            </div>
                         </div>
+
                     </div>
                 </div>`;
       });
