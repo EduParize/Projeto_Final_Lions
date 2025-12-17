@@ -14,213 +14,213 @@
     />
 
     <style>
-      /* --- PALETA DE CORES OFICIAL --- */
+      /* --- PALETA DE CORES --- */
       :root {
         --verde-palmeiras: #006437;
         --verde-escuro: #004526;
-        --dourado: #d4af37; /* Dourado dos títulos */
-        --branco: #ffffff;
-        --cinza-fundo: #f4f7f6;
+        --dourado: #d4af37;
+        --fundo-dark: #001a0d; /* Verde bem escuro */
       }
 
       body {
-        background-color: var(--cinza-fundo);
+        /* Fundo Escuro com efeito de luz (Spotlight) */
+        background-color: var(--fundo-dark);
+        background-image: radial-gradient(
+            at 0% 0%,
+            rgba(0, 100, 55, 0.3) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(212, 175, 55, 0.15) 0px,
+            transparent 50%
+          );
+        background-attachment: fixed; /* Fundo fixo ao rolar */
         font-family: "Poppins", sans-serif;
-        color: #333;
+        color: #f0f0f0;
         overflow-x: hidden;
       }
 
       /* --- HEADER --- */
       .header-app {
-        background: linear-gradient(
-          135deg,
-          var(--verde-palmeiras) 0%,
-          var(--verde-escuro) 100%
-        );
+        background: rgba(0, 69, 38, 0.9); /* Translúcido */
+        backdrop-filter: blur(10px); /* Efeito de vidro */
         color: white;
         padding: 20px;
-        border-bottom: 4px solid var(--dourado);
-        box-shadow: 0 4px 15px rgba(0, 100, 55, 0.2);
+        border-bottom: 2px solid var(--dourado);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
 
-      /* --- NAV PILLS (Abas) --- */
+      /* --- NAV PILLS --- */
       .nav-pills .nav-link {
-        color: var(--verde-palmeiras);
+        color: #ccc;
         font-weight: 600;
         border-radius: 50px;
         padding: 10px 30px;
         transition: all 0.3s ease;
-        background: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        background: rgba(255, 255, 255, 0.05); /* Levemente visível */
+        border: 1px solid rgba(255, 255, 255, 0.1);
         margin: 0 5px;
       }
       .nav-pills .nav-link:hover {
-        background-color: #e9f5ec;
-        transform: translateY(-2px);
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white;
       }
       .nav-pills .nav-link.active {
         background-color: var(--verde-palmeiras) !important;
         color: white !important;
-        box-shadow: 0 4px 10px rgba(0, 100, 55, 0.3);
+        box-shadow: 0 0 15px rgba(0, 100, 55, 0.6);
+        border-color: var(--verde-palmeiras);
       }
 
-      /* =========================================
-           NOVO CSS DA HISTÓRIA (TIMELINE PREMIUM)
-        ========================================= */
+      /* --- TIMELINE (HISTÓRIA) --- */
       #history-container {
         position: relative;
-        padding-left: 60px; /* Espaço para a linha e bolinhas */
+        padding-left: 60px;
         padding-right: 10px;
       }
 
-      /* A Linha Vertical Central */
       #history-container::before {
         content: "";
         position: absolute;
         top: 0;
         bottom: 0;
-        left: 28px; /* Posição exata da linha */
+        left: 28px;
         width: 4px;
+        /* Linha Brilhante */
         background: linear-gradient(
           to bottom,
           var(--verde-palmeiras),
           var(--dourado) 80%,
-          var(--verde-palmeiras)
+          transparent
         );
         border-radius: 2px;
         z-index: 0;
+        box-shadow: 0 0 10px var(--verde-palmeiras);
       }
 
-      /* Wrapper do Card (para posicionar o ponto) */
       .timeline-wrapper {
         position: relative;
-        margin-bottom: 50px; /* Espaço entre os anos */
+        margin-bottom: 60px;
       }
 
-      /* O Ponto Conector (Bolinha Dourada) */
       .timeline-dot {
         position: absolute;
-        left: -44px; /* Alinha com a linha vertical */
+        left: -44px;
         top: 25px;
         width: 28px;
         height: 28px;
         background-color: var(--dourado);
-        border: 4px solid white;
+        border: 4px solid #1a1a1a; /* Borda escura para separar da linha */
         border-radius: 50%;
-        box-shadow: 0 0 0 3px var(--verde-palmeiras); /* Anel verde em volta */
+        box-shadow: 0 0 15px var(--dourado); /* Brilho Dourado */
         z-index: 1;
         transition: transform 0.3s ease;
       }
       .timeline-wrapper:hover .timeline-dot {
-        transform: scale(1.2); /* Bolinha cresce ao passar o mouse */
+        transform: scale(1.3);
       }
 
-      /* O Card do Ano */
       .timeline-card {
-        background: white;
+        /* O "Vidro" Branco */
+        background: rgba(255, 255, 255, 0.95);
         border-radius: 24px;
         padding: 35px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
-        border-left: 6px solid var(--verde-palmeiras); /* Borda lateral verde */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        border-left: 6px solid var(--verde-palmeiras);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        overflow: hidden;
+        color: #333; /* Texto escuro dentro do card branco */
       }
 
       .timeline-card:hover {
         transform: translateY(-8px) translateX(5px);
-        box-shadow: 0 20px 40px rgba(0, 100, 55, 0.15);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
       }
 
-      /* Marca d'água sutil de fundo (opcional, removi para limpar o visual) */
-      /* .timeline-card::after { content: '🐷'; position: absolute; top: -20px; right: -20px; font-size: 150px; opacity: 0.03; pointer-events: none; } */
-
-      /* Título do Ano */
       .history-year-title {
-        font-size: 3rem;
+        font-size: 3.5rem;
         font-weight: 800;
         color: var(--verde-palmeiras);
         line-height: 1;
         margin-bottom: 10px;
-        letter-spacing: -1px;
+        letter-spacing: -2px;
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
       }
 
-      /* Badges dos Títulos */
       .title-badge {
-        background: linear-gradient(45deg, var(--dourado), #eacda3);
-        color: var(--verde-escuro);
+        background: linear-gradient(45deg, var(--dourado), #f5dba6);
+        color: #002211;
         font-weight: 700;
         padding: 8px 15px;
         border-radius: 20px;
         font-size: 0.85rem;
         display: inline-block;
         margin: 3px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
       }
 
-      /* Texto do Resumo */
       .history-summary {
         color: #555;
         font-size: 1.05rem;
         line-height: 1.7;
         margin-top: 20px;
         padding-left: 15px;
-        border-left: 3px solid #eee;
+        border-left: 3px solid #ddd;
       }
 
-      /* Área das Camisas (Vitrines) */
+      /* Camisas */
       .shirts-showcase {
         display: flex;
         gap: 25px;
         margin-top: 35px;
         justify-content: center;
       }
-
       .shirt-box {
-        background: #f8f9fa;
-        padding: 20px;
+        background: #f0f2f5;
+        padding: 15px;
         border-radius: 20px;
         text-align: center;
-        border: 3px solid transparent;
+        border: 2px solid transparent;
         transition: all 0.3s ease;
-        position: relative;
-        flex: 1; /* Ocupam o mesmo espaço */
+        flex: 1;
         max-width: 200px;
       }
-
       .shirt-box:hover {
         border-color: var(--dourado);
         background: white;
-        box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
         transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       }
-
       .shirt-label {
         font-weight: 700;
         color: var(--verde-palmeiras);
         display: block;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+        font-size: 0.8rem;
         text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
       }
-
       .shirt-img-premium {
-        height: 140px; /* Camisas maiores */
+        height: 130px;
         width: auto;
         object-fit: contain;
-        filter: drop-shadow(
-          0 8px 10px rgba(0, 0, 0, 0.15)
-        ); /* Sombra realista na camisa */
+        filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
         transition: transform 0.3s;
       }
       .shirt-box:hover .shirt-img-premium {
-        transform: scale(1.05);
+        transform: scale(1.1);
       }
 
-      /* --- CSS DO CAMPO E ADMIN (Mantido do anterior) --- */
+      /* --- CAMPO E PAINÉIS LATERAL --- */
+      /* Ajuste do card lateral para combinar com o tema */
+      .card-control-user {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+      }
+
       .field-container {
         background: repeating-linear-gradient(
           0deg,
@@ -229,7 +229,8 @@
           #388e3c 40px,
           #388e3c 80px
         );
-        border: 8px solid white;
+        border: 8px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5); /* Sombra mais forte */
         border-radius: 15px;
         padding: 20px;
         position: relative;
@@ -237,9 +238,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         overflow: hidden;
       }
+
+      /* Resto do CSS mantido (slots, botões, admin, etc) */
       .field-line {
         border-top: 2px solid rgba(255, 255, 255, 0.6);
         width: 100%;
@@ -261,7 +263,7 @@
       .player-slot {
         text-align: center;
         cursor: pointer;
-        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.2s;
         z-index: 10;
       }
       .player-slot:hover {
@@ -270,7 +272,7 @@
       .slot-circle {
         width: 65px;
         height: 65px;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.95);
         border-radius: 50%;
         margin: 0 auto;
         display: flex;
@@ -279,7 +281,7 @@
         border: 3px solid var(--verde-palmeiras);
         font-size: 1.8rem;
         color: #ccc;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         font-weight: bold;
       }
       .bg-selected {
@@ -288,7 +290,7 @@
         border-color: var(--dourado) !important;
       }
       .player-name {
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(0, 0, 0, 0.85);
         color: white;
         padding: 4px 10px;
         border-radius: 12px;
@@ -296,13 +298,13 @@
         margin-top: 8px;
         font-weight: 600;
         display: inline-block;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
       .admin-panel {
         border: 2px dashed var(--dourado);
         background: #fffbf0;
         border-radius: 15px;
+        color: #333;
       }
       .btn-warning {
         background-color: var(--dourado);
@@ -324,9 +326,7 @@
     </style>
   </head>
   <body>
-    <div
-      class="header-app d-flex justify-content-between align-items-center shadow"
-    >
+    <div class="header-app d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-3">
         <div
           style="
@@ -338,13 +338,21 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
           "
         >
           🐷
         </div>
         <div>
-          <h5 class="m-0 fw-bold" style="letter-spacing: 0.5px">Verdão Info</h5>
+          <h5
+            class="m-0 fw-bold"
+            style="
+              letter-spacing: 0.5px;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            "
+          >
+            Verdão Info
+          </h5>
           <small id="user-display" style="opacity: 0.9; font-weight: 300"
             >Carregando...</small
           >
@@ -413,7 +421,7 @@
                         type="text"
                         id="adm-nome"
                         class="form-control"
-                        placeholder="Nome do Craque"
+                        placeholder="Nome"
                         required
                       />
                     </div>
@@ -436,8 +444,8 @@
               </div>
 
               <div
-                class="card shadow border-0 rounded-4 sticky-top"
-                style="top: 20px; background: white"
+                class="card shadow border-0 rounded-4 sticky-top card-control-user"
+                style="top: 100px"
               >
                 <div class="card-body p-4">
                   <h4
@@ -446,15 +454,11 @@
                   >
                     Seu Elenco
                   </h4>
-                  <p class="text-muted small mb-4">
-                    Escale os maiores ídolos da história.
-                  </p>
-
+                  <p class="text-muted small mb-4">Escale os maiores ídolos.</p>
                   <div class="d-grid gap-3">
                     <button
                       class="btn btn-success py-3 fw-bold shadow-sm rounded-pill"
                       onclick="salvarTime()"
-                      style="font-size: 1.1rem"
                     >
                       💾 Salvar Time
                     </button>
@@ -467,16 +471,14 @@
                     </button>
                     <div class="d-flex gap-2 mt-2">
                       <button
-                        class="btn btn-outline-secondary flex-grow-1 rounded-pill border-2 fw-bold"
+                        class="btn btn-outline-secondary flex-grow-1 rounded-pill fw-bold"
                         onclick="restaurarSalvo()"
-                        title="Desfazer alterações"
                       >
                         🔄 Restaurar
                       </button>
                       <button
-                        class="btn btn-outline-danger flex-grow-1 rounded-pill border-2 fw-bold"
+                        class="btn btn-outline-danger flex-grow-1 rounded-pill fw-bold"
                         onclick="limparEscalacao()"
-                        title="Limpar campo"
                       >
                         ❌ Limpar
                       </button>
@@ -604,9 +606,7 @@
               data-bs-dismiss="modal"
             ></button>
           </div>
-          <div class="modal-body p-0">
-            <div id="lista-selecao"></div>
-          </div>
+          <div class="modal-body p-0"><div id="lista-selecao"></div></div>
         </div>
       </div>
     </div>
@@ -652,6 +652,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // MANTENHA AQUI TODO O SEU SCRIPT JAVASCRIPT ANTERIOR
+      // (Copie o bloco <script> inteiro da resposta anterior)
       const API_URL = "http://localhost:3000/api";
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
@@ -659,7 +661,6 @@
       let timeAtual = new Array(11).fill(null);
       let todosJogadores = [];
       let slotFoco = null;
-      // Variável global para guardar a lista filtrada da posição atual (Busca)
       let jogadoresDaPosicaoAtual = [];
 
       if (!token) window.location.href = "login.html";
@@ -670,8 +671,6 @@
       }
 
       restaurarSalvo();
-
-      // --- FUNÇÕES ---
 
       function restaurarSalvo() {
         if (user.myTeam && user.myTeam.length > 0) {
@@ -708,18 +707,12 @@
         timeAtual.forEach((jogador, i) => {
           if (jogador) {
             temJogador = true;
-            lista.innerHTML += `
-                        <li class="list-group-item d-flex justify-content-between align-items-center py-3" style="border-bottom-color: #eee;">
-                            <span class="fw-bold" style="color: var(--verde-palmeiras); font-size: 1.1rem;">${jogador.namePlayer}</span>
-                            <span class="badge rounded-pill text-bg-light border shadow-sm text-uppercase" style="font-size: 0.75rem; letter-spacing:1px;">${posicoes[i]}</span>
-                        </li>
-                    `;
+            lista.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center py-3"><span class="fw-bold" style="color: var(--verde-palmeiras);">${jogador.namePlayer}</span><span class="badge rounded-pill text-bg-light border shadow-sm">${posicoes[i]}</span></li>`;
           }
         });
-
         if (!temJogador)
           lista.innerHTML =
-            '<li class="list-group-item text-center text-muted py-5" style="font-style: italic;">Nenhum jogador escalado ainda.</li>';
+            '<li class="list-group-item text-center text-muted py-5">Nenhum jogador escalado ainda.</li>';
         new bootstrap.Modal(document.getElementById("modalEscalacao")).show();
       }
 
@@ -734,23 +727,10 @@
         }
       }
 
-      // --- FUNÇÃO DE BUSCA NO MODAL (Atualizada) ---
       function abrirSelecao(posicao, slotId) {
         slotFoco = slotId;
         const listaDiv = document.getElementById("lista-selecao");
-
-        // HTML do Input de Busca + Container da Lista
-        listaDiv.innerHTML = `
-                <div class="p-4 bg-light border-bottom sticky-top">
-                    <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden">
-                        <span class="input-group-text bg-white border-0 ps-4" style="color: var(--verde-palmeiras);">🔍</span>
-                        <input type="text" id="input-busca-jogador" class="form-control border-0" placeholder="Buscar ${posicao.toLowerCase()} por nome..." onkeyup="filtrarJogadoresNaTela()" style="box-shadow: none;">
-                    </div>
-                </div>
-                <div id="lista-jogadores-render" class="list-group list-group-flush p-3">
-                    <div class="text-center p-5 text-muted">Carregando craques...</div>
-                </div>
-            `;
+        listaDiv.innerHTML = `<div class="p-4 bg-light border-bottom sticky-top"><div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden"><span class="input-group-text bg-white border-0 ps-4">🔍</span><input type="text" id="input-busca-jogador" class="form-control border-0" placeholder="Buscar ${posicao}..." onkeyup="filtrarJogadoresNaTela()"></div></div><div id="lista-jogadores-render" class="list-group list-group-flush p-3"><div class="text-center p-5 text-muted">Carregando...</div></div>`;
 
         carregarJogadoresDisponiveis().then(() => {
           jogadoresDaPosicaoAtual = todosJogadores.filter(
@@ -758,37 +738,22 @@
           );
           renderizarLista(jogadoresDaPosicaoAtual);
         });
-
         new bootstrap.Modal(document.getElementById("modalSelecao")).show();
       }
 
       function renderizarLista(lista) {
         const container = document.getElementById("lista-jogadores-render");
         container.innerHTML = "";
-
         if (lista.length === 0) {
           container.innerHTML =
-            '<div class="p-5 text-center text-muted fs-5">Nenhum jogador encontrado. 🙁</div>';
+            '<div class="p-5 text-center text-muted">Nenhum jogador encontrado.</div>';
           return;
         }
-
         lista.forEach((j) => {
           const btn = document.createElement("button");
           btn.className =
             "list-group-item list-group-item-action py-3 mb-2 rounded-4 border shadow-sm d-flex align-items-center";
-          btn.style.transition = "all 0.2s";
-          btn.innerHTML = `
-                    <div style="width: 40px; height: 40px; background: var(--cinza-fundo); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.2rem;">🏃</div>
-                    <span class="fw-bold fs-5" style="color: var(--verde-palmeiras);">${j.namePlayer}</span>
-                `;
-          btn.onmouseover = () => {
-            btn.style.transform = "scale(1.02)";
-            btn.style.borderColor = "var(--dourado)";
-          };
-          btn.onmouseout = () => {
-            btn.style.transform = "scale(1)";
-            btn.style.borderColor = "#dee2e6";
-          };
+          btn.innerHTML = `<div style="width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">🏃</div><span class="fw-bold fs-5" style="color: var(--verde-palmeiras);">${j.namePlayer}</span>`;
           btn.onclick = () => escolherJogador(j);
           container.appendChild(btn);
         });
@@ -865,12 +830,10 @@
             alert("Erro ao salvar.");
           }
         } catch (error) {
-          console.error(error);
           alert("Erro conexão");
         }
       }
 
-      // --- ADMIN ---
       document
         .getElementById("form-admin")
         .addEventListener("submit", async (e) => {
@@ -901,33 +864,27 @@
           }
         });
 
-      // =========================================
-      // DADOS DA HISTÓRIA (Adicione os seus aqui)
-      // =========================================
       const historyData = [
-        {
+      {
           year: 2023,
           titles: ["Brasileirão", "Paulista", "Supercopa"],
-          summary:
-            "O ano do Dodeca! O Verdão mostrou força mental e consistência para buscar o título brasileiro em uma arrancada histórica, superando adversidades e provando a força da Terceira Academia.",
-          shirt1: "https://via.placeholder.com/150?text=2023+HOME", // Coloque os links reais aqui
-          shirt2: "https://via.placeholder.com/150?text=2023+AWAY",
+          summary: "O ano do Dodeca!",
+          shirt1: "https://via.placeholder.com/100?text=2023_1",
+          shirt2: "https://via.placeholder.com/100?text=2023_2",
         },
         {
           year: 2022,
           titles: ["Brasileirão", "Paulista", "Recopa"],
-          summary:
-            "O ano do Hendeca! Uma campanha irretocável com apenas três derrotas no campeonato inteiro, dominando de ponta a ponta.",
-          shirt1: "https://via.placeholder.com/150?text=2022+HOME",
-          shirt2: "https://via.placeholder.com/150?text=2022+AWAY",
+          summary: "O ano do Hendeca!",
+          shirt1: "https://via.placeholder.com/100?text=2022_1",
+          shirt2: "https://via.placeholder.com/100?text=2022_2",
         },
         {
           year: 2021,
-          titles: ["Libertadores da América"],
-          summary:
-            "Glória Eterna Tricampeã! Vencemos o Flamengo em Montevidéu com gol histórico de Deyverson na prorrogação. O continente pintado de verde novamente.",
-          shirt1: "https://via.placeholder.com/150?text=2021+HOME",
-          shirt2: "https://via.placeholder.com/150?text=2021+AWAY",
+          titles: ["Libertadores"],
+          summary: "Glória Eterna Tricampeã!",
+          shirt1: "https://via.placeholder.com/100?text=2021_1",
+          shirt2: "https://via.placeholder.com/100?text=2021_2",
         },
         {
           year: 2020,
@@ -936,39 +893,26 @@
           shirt1: "https://static.netshoes.com.br/produtos/camisa-palmeiras-i-2021-sn-torcedor-puma-masculina/60/NWG-0855-060/NWG-0855-060_zoom1.jpg?ts=1763723678",
           shirt2: "https://via.placeholder.com/100?text=2021_2",
         },
-        {
-          year: 1999,
-          titles: ["Libertadores da América"],
-          summary:
-            "A primeira Glória Eterna! Sob o comando de Felipão e com São Marcos operando milagres nos pênaltis, o Palmeiras conquistou a América.",
-          shirt1: "https://via.placeholder.com/150?text=1999+HOME",
-          shirt2: "https://via.placeholder.com/150?text=1999+GK",
-        },
       ];
 
-      // INJEÇÃO DOS CARDS NO NOVO LAYOUT PREMIUM
       const histContainer = document.getElementById("history-container");
       historyData.forEach((h) => {
         histContainer.innerHTML += `
                 <div class="timeline-wrapper">
-                    <div class="timeline-dot"></div> <div class="timeline-card">
-                        
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
                         <div class="d-md-flex justify-content-between align-items-start mb-4">
                             <div>
                                 <h2 class="history-year-title">${h.year}</h2>
-                                <div class="mt-2">
-                                    ${h.titles
-                                      .map(
-                                        (t) =>
-                                          `<span class="title-badge">🏆 ${t}</span>`
-                                      )
-                                      .join("")}
-                                </div>
+                                <div class="mt-2">${h.titles
+                                  .map(
+                                    (t) =>
+                                      `<span class="title-badge">🏆 ${t}</span>`
+                                  )
+                                  .join("")}</div>
                             </div>
                         </div>
-                        
                         <p class="history-summary">${h.summary}</p>
-                        
                         <div class="shirts-showcase">
                            <div class="shirt-box">
                                 <span class="shirt-label">Uniforme Principal</span>
@@ -987,7 +931,6 @@
         }">
                            </div>
                         </div>
-
                     </div>
                 </div>`;
       });
