@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Palmeiras History & Squad</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -39,6 +40,10 @@
         font-family: "Poppins", sans-serif;
         color: #f0f0f0;
         overflow-x: hidden;
+
+        /* --- O TRUQUE MÁGICO (ZOOM 80%) --- */
+        /* Isso escala todo o site para 80% do tamanho original */
+        zoom: 0.8;
       }
 
       /* --- HEADER --- */
@@ -351,7 +356,7 @@
               text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             "
           >
-            Verdão Info
+            Museu AVANTI
           </h5>
           <small id="user-display" style="opacity: 0.9; font-weight: 300"
             >Carregando...</small
@@ -653,7 +658,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       // MANTENHA AQUI TODO O SEU SCRIPT JAVASCRIPT ANTERIOR
-      // (Copie o bloco <script> inteiro da resposta anterior)
       const API_URL = "http://localhost:3000/api";
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
@@ -866,32 +870,46 @@
 
       const historyData = [
       {
+          year: 2025,
+          titles: [],
+          summary: "Ano sombrio",
+          shirt1: "./img/2025_home.png",
+          shirt2: "./img/2025_away.webp",
+        },
+      {
+          year: 2024,
+          titles: ["Paulista", ],
+          summary: "Tricampea paulistinha",
+          shirt1: "./img/2024_home.webp",
+          shirt2: "./img/2024_away.jpg",
+        },
+      {
           year: 2023,
           titles: ["Brasileirão", "Paulista", "Supercopa"],
           summary: "O ano do Dodeca!",
-          shirt1: "https://via.placeholder.com/100?text=2023_1",
-          shirt2: "https://via.placeholder.com/100?text=2023_2",
+          shirt1: "./img/2023_home.jpg",
+          shirt2: "./img/2023_away.jpg",
         },
         {
           year: 2022,
           titles: ["Brasileirão", "Paulista", "Recopa"],
           summary: "O ano do Hendeca!",
-          shirt1: "https://via.placeholder.com/100?text=2022_1",
-          shirt2: "https://via.placeholder.com/100?text=2022_2",
+          shirt1: "./img/2022_home.png",
+          shirt2: "./img/2022_away.png",
         },
         {
           year: 2021,
           titles: ["Libertadores"],
           summary: "Glória Eterna Tricampeã!",
-          shirt1: "https://via.placeholder.com/100?text=2021_1",
-          shirt2: "https://via.placeholder.com/100?text=2021_2",
+          shirt1: "./img/2021_home.jpg",
+          shirt2: "./img/2021_away.webp",
         },
         {
           year: 2020,
           titles: ["Libertadores", "Paulista", "Copa do Brasil"],
           summary: "A América fica verde pela segunda vez!<br>Abel chega",
-          shirt1: "https://static.netshoes.com.br/produtos/camisa-palmeiras-i-2021-sn-torcedor-puma-masculina/60/NWG-0855-060/NWG-0855-060_zoom1.jpg?ts=1763723678",
-          shirt2: "https://via.placeholder.com/100?text=2021_2",
+          shirt1: "./img/2020_home.webp",
+          shirt2: "./img/2020_away.webp",
         },
       ];
 
