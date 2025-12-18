@@ -31,7 +31,7 @@ export default {
       throw createError("Email e senha são obrigatorios", 400);
     }
 
-    const user = await repo.findByEmail(email).populate("myTeam");
+    const user = await repo.findByEmail(email).populate("myTeam.player");
 
     if (!user) {
       throw createError("Email ou senha invalidos", 401);
@@ -59,8 +59,8 @@ export default {
   async saveUserTeam(userId, playerIds) {
     const updatedUser = await repo.updateById(userId, { myTeam: playerIds });
     if (!updatedUser) throw createError("Usuário não encontrado", 404);
-
-    return updatedUser.populate("myTeam");
+    
+    return updatedUser.populate('myTeam.player');
   },
 
   async listUsers() {
