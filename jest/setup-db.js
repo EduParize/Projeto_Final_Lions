@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export class MongooseDatabase {
   constructor(DB_URI, DB_NAME) {
@@ -6,11 +6,11 @@ export class MongooseDatabase {
     this.DB_NAME = DB_NAME;
     this.DB_CONNECTION = undefined;
 
-    mongoose.connection?.once('open', () => {
-      console.info('Connection established - MongoDB');
+    mongoose.connection?.once("open", () => {
+      console.info("Connection established - MongoDB");
     });
 
-    mongoose.connection?.on('error', (err) => {
+    mongoose.connection?.on("error", (err) => {
       console.error(`Error connecting to MongoDB: ${err.message}`);
     });
   }

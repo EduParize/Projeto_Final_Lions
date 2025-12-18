@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Palmeiras History & Squad</title>
-    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,16 +15,14 @@
     />
 
     <style>
-      /* --- PALETA DE CORES --- */
       :root {
         --verde-palmeiras: #006437;
         --verde-escuro: #004526;
         --dourado: #d4af37;
-        --fundo-dark: #001a0d; /* Verde bem escuro */
+        --fundo-dark: #001a0d;
       }
 
       body {
-        /* Fundo Escuro com efeito de luz (Spotlight) */
         background-color: var(--fundo-dark);
         background-image: radial-gradient(
             at 0% 0%,
@@ -36,20 +34,17 @@
             rgba(212, 175, 55, 0.15) 0px,
             transparent 50%
           );
-        background-attachment: fixed; /* Fundo fixo ao rolar */
+        background-attachment: fixed;
         font-family: "Poppins", sans-serif;
         color: #f0f0f0;
         overflow-x: hidden;
 
-        /* --- O TRUQUE MÁGICO (ZOOM 80%) --- */
-        /* Isso escala todo o site para 80% do tamanho original */
         zoom: 0.8;
       }
 
-      /* --- HEADER --- */
       .header-app {
-        background: rgba(0, 69, 38, 0.9); /* Translúcido */
-        backdrop-filter: blur(10px); /* Efeito de vidro */
+        background: rgba(0, 69, 38, 0.9);
+        backdrop-filter: blur(10px);
         color: white;
         padding: 20px;
         border-bottom: 2px solid var(--dourado);
@@ -59,14 +54,13 @@
         z-index: 1000;
       }
 
-      /* --- NAV PILLS --- */
       .nav-pills .nav-link {
         color: #ccc;
         font-weight: 600;
         border-radius: 50px;
         padding: 10px 30px;
         transition: all 0.3s ease;
-        background: rgba(255, 255, 255, 0.05); /* Levemente visível */
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
         margin: 0 5px;
       }
@@ -81,7 +75,6 @@
         border-color: var(--verde-palmeiras);
       }
 
-      /* --- TIMELINE (HISTÓRIA) --- */
       #history-container {
         position: relative;
         padding-left: 60px;
@@ -95,7 +88,7 @@
         bottom: 0;
         left: 28px;
         width: 4px;
-        /* Linha Brilhante */
+
         background: linear-gradient(
           to bottom,
           var(--verde-palmeiras),
@@ -119,9 +112,9 @@
         width: 28px;
         height: 28px;
         background-color: var(--dourado);
-        border: 4px solid #1a1a1a; /* Borda escura para separar da linha */
+        border: 4px solid #1a1a1a;
         border-radius: 50%;
-        box-shadow: 0 0 15px var(--dourado); /* Brilho Dourado */
+        box-shadow: 0 0 15px var(--dourado);
         z-index: 1;
         transition: transform 0.3s ease;
       }
@@ -130,14 +123,13 @@
       }
 
       .timeline-card {
-        /* O "Vidro" Branco */
         background: rgba(255, 255, 255, 0.95);
         border-radius: 24px;
         padding: 35px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         border-left: 6px solid var(--verde-palmeiras);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        color: #333; /* Texto escuro dentro do card branco */
+        color: #333;
       }
 
       .timeline-card:hover {
@@ -177,7 +169,6 @@
         border-left: 3px solid #ddd;
       }
 
-      /* Camisas */
       .shirts-showcase {
         display: flex;
         gap: 25px;
@@ -219,8 +210,6 @@
         transform: scale(1.1);
       }
 
-      /* --- CAMPO E PAINÉIS LATERAL --- */
-      /* Ajuste do card lateral para combinar com o tema */
       .card-control-user {
         background: rgba(255, 255, 255, 0.95);
         border: none;
@@ -235,7 +224,7 @@
           #388e3c 80px
         );
         border: 8px solid rgba(255, 255, 255, 0.9);
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5); /* Sombra mais forte */
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
         border-radius: 15px;
         padding: 20px;
         position: relative;
@@ -246,7 +235,6 @@
         overflow: hidden;
       }
 
-      /* Resto do CSS mantido (slots, botões, admin, etc) */
       .field-line {
         border-top: 2px solid rgba(255, 255, 255, 0.6);
         width: 100%;
@@ -333,7 +321,18 @@
   <body>
     <div class="header-app d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-3">
-        <img src="img/favicon.png" alt="Escudo" style="height: 55px; width: auto; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <img
+          src="img/favicon.png"
+          alt="Escudo"
+          style="
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+            transition: transform 0.3s;
+          "
+          onmouseover="this.style.transform='scale(1.1)'"
+          onmouseout="this.style.transform='scale(1)'"
+        />
         <div>
           <h5
             class="m-0 fw-bold"
@@ -643,7 +642,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // MANTENHA AQUI TODO O SEU SCRIPT JAVASCRIPT ANTERIOR
       const API_URL = "http://localhost:3000/api";
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
@@ -855,45 +853,51 @@
         });
 
       const historyData = [
-      {
+        {
           year: 2025,
           titles: [],
-          summary: "Com foco total no novo Mundial de Clubes e nas competições de elite, o clube realizou investimentos recordes para reforçar todos os setores do campo. Embora tenha sido um ano de grandes jogos e protagonismo em todas as frentes, a equipe terminou o ciclo sem levantar taças de primeiro nível.<br><br>Contratações: Vitor Roque, Paulinho, Ramón Sosa, Andreas Pereira, Facundo Torres e Bruno Fuchs.<br><br>Chegadas no profissional: Allan 💎, Thalys e Luighi.",
+          summary:
+            "Com foco total no novo Mundial de Clubes e nas competições de elite, o clube realizou investimentos recordes para reforçar todos os setores do campo. Embora tenha sido um ano de grandes jogos e protagonismo em todas as frentes, a equipe terminou o ciclo sem levantar taças de primeiro nível.<br><br>Contratações: Vitor Roque, Paulinho, Ramón Sosa, Andreas Pereira, Facundo Torres e Bruno Fuchs.<br><br>Chegadas no profissional: Allan 💎, Thalys e Luighi.",
           shirt1: "./img/2025_home.png",
           shirt2: "./img/2025_away.webp",
         },
-      {
+        {
           year: 2024,
-          titles: ["Paulista", ],
-          summary: "Ano de consolidação da hegemonia estadual com o tricampeonato consecutivo. A temporada serviu como um período de transição importante, com a despedida de jovens talentos como Endrick e a chegada de reforços experientes para manter o nível competitivo do elenco.<br><br>Contratações: Aníbal Moreno, Felipe Anderson, Maurício, Agustín Giay e Caio Paulista.<br><br>Chegadas no profissional: Estêvão 💎 e Vitor Reis 💎.",
+          titles: ["Paulista"],
+          summary:
+            "Ano de consolidação da hegemonia estadual com o tricampeonato consecutivo. A temporada serviu como um período de transição importante, com a despedida de jovens talentos como Endrick e a chegada de reforços experientes para manter o nível competitivo do elenco.<br><br>Contratações: Aníbal Moreno, Felipe Anderson, Maurício, Agustín Giay e Caio Paulista.<br><br>Chegadas no profissional: Estêvão 💎 e Vitor Reis 💎.",
           shirt1: "./img/2024_home.webp",
           shirt2: "./img/2024_away.jpg",
         },
-      {
+        {
           year: 2023,
           titles: ["Brasileirão", "Paulista", "Supercopa"],
-          summary: "Marcado por uma das maiores reviravoltas da história do futebol brasileiro, o time buscou uma desvantagem de 13 pontos para erguer o bicampeonato nacional consecutivo. Além disso, venceu um duelo eletrizante contra o Flamengo para levar a taça da Supercopa.<br><br>Contratações: Richard Ríos e Artur.<br><br>Chegadas no profissional: Kevin 💎, Luis Guilherme 💎 e Fabinho",
+          summary:
+            "Marcado por uma das maiores reviravoltas da história do futebol brasileiro, o time buscou uma desvantagem de 13 pontos para erguer o bicampeonato nacional consecutivo. Além disso, venceu um duelo eletrizante contra o Flamengo para levar a taça da Supercopa.<br><br>Contratações: Richard Ríos e Artur.<br><br>Chegadas no profissional: Kevin 💎, Luis Guilherme 💎 e Fabinho",
           shirt1: "./img/2023_home.jpg",
           shirt2: "./img/2023_away.jpg",
         },
         {
           year: 2022,
           titles: ["Brasileirão", "Paulista", "Recopa"],
-          summary: "Um ano de domínio técnico e físico absoluto. O Palmeiras demonstrou uma regularidade impressionante, conquistando o Estadual com uma virada histórica na final e o Campeonato Brasileiro com várias rodadas de antecedência, estabelecendo-se como a equipe a ser batida no país.<br><br>Contratações: Murilo, Marcelo Lomba, Flaco López e Merentiel.<br><br>Chegadas no profissional: Endrick 💎 e Vanderlan",
+          summary:
+            "Um ano de domínio técnico e físico absoluto. O Palmeiras demonstrou uma regularidade impressionante, conquistando o Estadual com uma virada histórica na final e o Campeonato Brasileiro com várias rodadas de antecedência, estabelecendo-se como a equipe a ser batida no país.<br><br>Contratações: Murilo, Marcelo Lomba, Flaco López e Merentiel.<br><br>Chegadas no profissional: Endrick 💎 e Vanderlan",
           shirt1: "./img/2022_home.png",
           shirt2: "./img/2022_away.png",
         },
         {
           year: 2021,
           titles: ["Libertadores"],
-          summary: "A temporada foi marcada pela resiliência e estratégia, culminando na histórica final de Montevidéu, onde o time superou o Flamengo para conquistar a América pela segunda vez em menos de um ano. Foi a consagração definitiva do trabalho de Abel Ferreira no continente.<br><br>Contratações: Joaquín Piquerez.<br><br>Chegadas no profissional: Renan",
+          summary:
+            "A temporada foi marcada pela resiliência e estratégia, culminando na histórica final de Montevidéu, onde o time superou o Flamengo para conquistar a América pela segunda vez em menos de um ano. Foi a consagração definitiva do trabalho de Abel Ferreira no continente.<br><br>Contratações: Joaquín Piquerez.<br><br>Chegadas no profissional: Renan",
           shirt1: "./img/2021_home.jpg",
           shirt2: "./img/2021_away.webp",
         },
         {
           year: 2020,
           titles: ["Libertadores", "Paulista", "Copa do Brasil"],
-          summary: "Foi o ano da virada de chave, com a chegada de Abel Ferreira em outubro. O time encerrou um jejum de títulos continentais e nacionais na mesma temporada, superando o Santos na final da Libertadores e o Grêmio na decisão da Copa do Brasil.<br><br>Contratações: Matías Viña, Rony e Breno Lopes (autor do gol do título da Libertadores).<br><br>Chegadas no profissional: Gabriel Menino, Patrick de Paula, Danilo 💎 e Wesley",
+          summary:
+            "Foi o ano da virada de chave, com a chegada de Abel Ferreira em outubro. O time encerrou um jejum de títulos continentais e nacionais na mesma temporada, superando o Santos na final da Libertadores e o Grêmio na decisão da Copa do Brasil.<br><br>Contratações: Matías Viña, Rony e Breno Lopes (autor do gol do título da Libertadores).<br><br>Chegadas no profissional: Gabriel Menino, Patrick de Paula, Danilo 💎 e Wesley",
           shirt1: "./img/2020_home.webp",
           shirt2: "./img/2020_away.webp",
         },

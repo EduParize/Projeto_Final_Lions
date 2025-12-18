@@ -1,7 +1,5 @@
-
-
-import { bootstrapTest } from '../src/__test__/testUtils.js';
-import UserModel from '../src/models/user.model.js';
+import { bootstrapTest } from "../src/__test__/testUtils.js";
+import UserModel from "../src/models/user.model.js";
 
 let dbInstance;
 let mongoServer;

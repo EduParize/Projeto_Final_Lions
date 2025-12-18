@@ -23,7 +23,7 @@ describe("when we try to find a user by a valid id", () => {
     expect(updatedUser.email).toBe(updateUser.email);
     expect(updatedUser.password).toBe(updateUser.password);
 
-    const newVerification = await userModel.findById(updateUser._id)
+    const newVerification = await userModel.findById(updateUser._id);
 
     expect(newVerification.name).toBe(updateUser.name);
     expect(newVerification.email).toBe(updateUser.email);

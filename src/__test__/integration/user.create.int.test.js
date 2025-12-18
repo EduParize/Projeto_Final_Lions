@@ -7,9 +7,9 @@ describe("When we try to create a new user", () => {
       email: "userwithID@email.com",
       password: "passwordbacanalegal123",
     };
-    const createdUser = await userRepository.create(userData)
+    const createdUser = await userRepository.create(userData);
 
-    expect(createdUser).toHaveProperty("_id")
-    expect(createdUser).toBeDefined()
+    expect(createdUser).toHaveProperty("_id");
+    expect(createdUser).toBeDefined();
   });
 });

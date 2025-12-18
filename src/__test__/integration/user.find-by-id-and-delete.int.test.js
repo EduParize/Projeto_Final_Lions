@@ -1,7 +1,6 @@
 import userModel from "../../models/user.model";
 import userRepository from "../../repositories/user.repository";
 
-
 describe("when we try to find a user by a valid id", () => {
   it("should delete the correct user", async () => {
     const user = {
