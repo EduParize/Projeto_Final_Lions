@@ -39,7 +39,7 @@ export default {
   async updatePlayer(id, data) {
     const payload = {};
     if (data.namePlayer) payload.namePlayer = data.namePlayer;
-    if (data.position) payload.positionPlayer = data.position;
+    if (data.positionPlayer) payload.positionPlayer = data.positionPlayer;
 
     if (Object.keys(payload).length === 0) {
       throw createError("Nenhum campo informado para atualização.", 400);
