@@ -8,9 +8,9 @@ describe("When we try to find a user with a specific email", () => {
       email: "emailtest@email.com",
       password: "strongpassword123",
     };
-    const createUser = await userModel.create(userData)
-    const tryFindUser = await userRepository.findByEmail(createUser.email)
+    const createUser = await userModel.create(userData);
+    const tryFindUser = await userRepository.findByEmail(createUser.email);
 
-    await expect(tryFindUser).toBeDefined()
+    await expect(tryFindUser).toBeDefined();
   });
 });

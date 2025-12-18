@@ -1,281 +1,346 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Acesso - Museu AVANTI</title>
-    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        :root {
-            --verde-palmeiras: #006437;
-            --verde-escuro: #004526;
-            --dourado: #d4af37;
-            --branco: #ffffff;
-        }
+      :root {
+        --verde-palmeiras: #006437;
+        --verde-escuro: #004526;
+        --dourado: #d4af37;
+        --branco: #ffffff;
+      }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--verde-palmeiras) 0%, #00331f 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-        }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--verde-palmeiras) 0%,
+          #00331f 100%
+        );
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+      }
 
-        /* O Card Principal */
-        .login-card {
-            background-color: var(--branco);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            overflow: hidden;
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            border: 4px solid rgba(255,255,255,0.1);
-        }
+      .login-card {
+        background-color: var(--branco);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+        position: relative;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        margin: 0 auto;
+      }
 
-        /* Cabeçalho do Card (Logo) */
-        .card-header-custom {
-            background-color: var(--verde-palmeiras);
-            padding: 30px 20px;
-            text-align: center;
-            color: white;
-            border-bottom: 4px solid var(--dourado);
-        }
+      .card-header-custom {
+        background-color: var(--verde-palmeiras);
+        padding: 30px 20px;
+        text-align: center;
+        color: white;
+        border-bottom: 4px solid var(--dourado);
+      }
 
-        .emoji-logo {
-            font-size: 3rem;
-            background: white;
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+      .emoji-logo {
+        font-size: 3rem;
+        background: white;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
 
-        /* Corpo do Formulário */
-        .card-body-custom {
-            padding: 40px 30px;
-        }
+      .card-body-custom {
+        padding: 40px 30px;
+      }
 
-        /* Inputs Estilizados */
-        .form-control {
-            background-color: #f8f9fa;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 0.95rem;
-            transition: all 0.3s;
-        }
+      .form-control {
+        background-color: #f8f9fa;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+      }
 
-        .form-control:focus {
-            background-color: white;
-            border-color: var(--verde-palmeiras);
-            box-shadow: 0 0 0 4px rgba(0, 100, 55, 0.1);
-        }
+      .form-control:focus {
+        background-color: white;
+        border-color: var(--verde-palmeiras);
+        box-shadow: 0 0 0 4px rgba(0, 100, 55, 0.1);
+      }
 
-        /* Botão Principal */
-        .btn-success {
-            background-color: var(--verde-palmeiras);
-            border: none;
-            border-radius: 10px;
-            padding: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: transform 0.2s;
-        }
+      .btn-success {
+        background-color: var(--verde-palmeiras);
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: transform 0.2s;
+      }
 
-        .btn-success:hover {
-            background-color: var(--verde-escuro);
-            transform: translateY(-2px);
-        }
+      .btn-success:hover {
+        background-color: var(--verde-escuro);
+        transform: translateY(-2px);
+      }
 
-        /* Link de Troca (Login <-> Cadastro) */
-        .switch-text {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        .switch-text a {
-            color: var(--verde-palmeiras);
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .switch-text a:hover {
-            text-decoration: underline;
-        }
+      .switch-text {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .switch-text a {
+        color: var(--verde-palmeiras);
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .switch-text a:hover {
+        text-decoration: underline;
+      }
 
-        /* Classes para esconder/mostrar com animação */
-        .hidden {
-            display: none !important;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
+      .hidden {
+        display: none !important;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="container px-4">
-        <div class="login-card fade-in">
-            
-            <div class="card-header-custom">
-                <div class="emoji-logo">🐷</div>
-                <h4 class="fw-bold m-0">Museu AVANTI</h4>
-                <small style="opacity: 0.8;">Acesso Restrito</small>
-            </div>
-
-            <div id="loginForm" class="card-body-custom fade-in">
-                <h5 class="fw-bold text-center mb-4" style="color: var(--verde-palmeiras);">Bem-vindo de volta!</h5>
-                
-                <form onsubmit="fazerLogin(event)">
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold">E-mail</label>
-                        <input type="email" id="loginEmail" class="form-control" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label small text-muted fw-bold">Senha</label>
-                        <input type="password" id="loginSenha" class="form-control" placeholder="••••••••" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-success w-100 shadow-sm">ENTRAR</button>
-                </form>
-
-                <p class="switch-text">
-                    Ainda não tem conta? <br>
-                    <a onclick="alternarFormulario()">Criar cadastro agora</a>
-                </p>
-            </div>
-
-            <div id="cadastroForm" class="card-body-custom fade-in hidden">
-                <h5 class="fw-bold text-center mb-4" style="color: var(--dourado);">Criar Nova Conta</h5>
-                
-                <form onsubmit="fazerCadastro(event)">
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold">Nome Completo</label>
-                        <input type="text" id="cadNome" class="form-control" placeholder="Ex: Endrick Felipe" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small text-muted fw-bold">E-mail</label>
-                        <input type="email" id="cadEmail" class="form-control" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label small text-muted fw-bold">Senha</label>
-                        <input type="password" id="cadSenha" class="form-control" placeholder="Crie uma senha forte" required>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-warning text-white w-100 shadow-sm fw-bold" style="background-color: var(--dourado); border: none;">CADASTRAR</button>
-                </form>
-
-                <p class="switch-text">
-                    Já possui acesso? <br>
-                    <a onclick="alternarFormulario()">Voltar para Login</a>
-                </p>
-            </div>
-
+      <div class="login-card fade-in">
+        <div class="card-header-custom">
+          <img
+            src="img/favicon.png"
+            alt="Escudo"
+            style="
+              height: 55px;
+              width: auto;
+              filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+              transition: transform 0.3s;
+            "
+            onmouseover="this.style.transform='scale(1.1)'"
+            onmouseout="this.style.transform='scale(1)'"
+          />
+          <h4 class="fw-bold m-0">Museu AVANTI</h4>
+          <small style="opacity: 0.8">Acesso Restrito</small>
         </div>
-        <div class="text-center mt-3 text-white-50 small">
-            &copy; 2025 Projeto Lions Dev
+
+        <div id="loginForm" class="card-body-custom fade-in">
+          <h5
+            class="fw-bold text-center mb-4"
+            style="color: var(--verde-palmeiras)"
+          >
+            Bem-vindo de volta!
+          </h5>
+
+          <form onsubmit="fazerLogin(event)">
+            <div class="mb-3">
+              <label class="form-label small text-muted fw-bold">E-mail</label>
+              <input
+                type="email"
+                id="loginEmail"
+                class="form-control"
+                placeholder="seu@email.com"
+                required
+              />
+            </div>
+            <div class="mb-4">
+              <label class="form-label small text-muted fw-bold">Senha</label>
+              <input
+                type="password"
+                id="loginSenha"
+                class="form-control"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 shadow-sm">
+              ENTRAR
+            </button>
+          </form>
+
+          <p class="switch-text">
+            Ainda não tem conta? <br />
+            <a onclick="alternarFormulario()">Criar cadastro agora</a>
+          </p>
         </div>
+
+        <div id="cadastroForm" class="card-body-custom fade-in hidden">
+          <h5 class="fw-bold text-center mb-4" style="color: var(--dourado)">
+            Criar Nova Conta
+          </h5>
+
+          <form onsubmit="fazerCadastro(event)">
+            <div class="mb-3">
+              <label class="form-label small text-muted fw-bold"
+                >Nome Completo</label
+              >
+              <input
+                type="text"
+                id="cadNome"
+                class="form-control"
+                placeholder="Ex: Endrick Felipe"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label small text-muted fw-bold">E-mail</label>
+              <input
+                type="email"
+                id="cadEmail"
+                class="form-control"
+                placeholder="seu@email.com"
+                required
+              />
+            </div>
+            <div class="mb-4">
+              <label class="form-label small text-muted fw-bold">Senha</label>
+              <input
+                type="password"
+                id="cadSenha"
+                class="form-control"
+                placeholder="Crie uma senha forte"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-warning text-white w-100 shadow-sm fw-bold"
+              style="background-color: var(--dourado); border: none"
+            >
+              CADASTRAR
+            </button>
+          </form>
+
+          <p class="switch-text">
+            Já possui acesso? <br />
+            <a onclick="alternarFormulario()">Voltar para Login</a>
+          </p>
+        </div>
+      </div>
+      <div class="text-center mt-3 text-white-50 small">
+        &copy; 2025 Projeto Lions Dev
+      </div>
     </div>
 
     <script>
-        const API_URL = "http://localhost:3000/api";
+      const API_URL = "http://localhost:3000/api";
 
-        function alternarFormulario() {
-            const login = document.getElementById('loginForm');
-            const cadastro = document.getElementById('cadastroForm');
-            
-            if (login.classList.contains('hidden')) {
-                login.classList.remove('hidden');
-                cadastro.classList.add('hidden');
-            } else {
-                login.classList.add('hidden');
-                cadastro.classList.remove('hidden');
-            }
+      function alternarFormulario() {
+        const login = document.getElementById("loginForm");
+        const cadastro = document.getElementById("cadastroForm");
+
+        if (login.classList.contains("hidden")) {
+          login.classList.remove("hidden");
+          cadastro.classList.add("hidden");
+        } else {
+          login.classList.add("hidden");
+          cadastro.classList.remove("hidden");
         }
+      }
 
-        async function fazerLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginSenha').value;
-            const btn = event.target.querySelector('button');
-            
-            btn.innerHTML = 'Carregando...';
-            btn.disabled = true;
+      async function fazerLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginSenha").value;
+        const btn = event.target.querySelector("button");
 
-            try {
-                const response = await fetch(`${API_URL}/login`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password })
-                });
+        btn.innerHTML = "Carregando...";
+        btn.disabled = true;
 
-                const data = await response.json();
+        try {
+          const response = await fetch(`${API_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
 
-                if (response.ok) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = 'index.html';
-                } else {
-                    alert("Erro: " + (data.error || "Dados incorretos"));
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Erro ao conectar com o servidor.");
-            } finally {
-                btn.innerHTML = 'ENTRAR';
-                btn.disabled = false;
-            }
+          const data = await response.json();
+
+          if (response.ok) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            window.location.href = "index.html";
+          } else {
+            alert("Erro: " + (data.error || "Dados incorretos"));
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Erro ao conectar com o servidor.");
+        } finally {
+          btn.innerHTML = "ENTRAR";
+          btn.disabled = false;
         }
+      }
 
-        async function fazerCadastro(event) {
-            event.preventDefault();
-            const name = document.getElementById('cadNome').value;
-            const email = document.getElementById('cadEmail').value;
-            const password = document.getElementById('cadSenha').value;
-            const btn = event.target.querySelector('button');
+      async function fazerCadastro(event) {
+        event.preventDefault();
+        const name = document.getElementById("cadNome").value;
+        const email = document.getElementById("cadEmail").value;
+        const password = document.getElementById("cadSenha").value;
+        const btn = event.target.querySelector("button");
 
-            btn.innerHTML = 'Salvando...';
-            btn.disabled = true;
+        btn.innerHTML = "Salvando...";
+        btn.disabled = true;
 
-            try {
-                const response = await fetch(`${API_URL}/users`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, email, password, role: "USER" })
-                });
+        try {
+          const response = await fetch(`${API_URL}/users`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password, role: "USER" }),
+          });
 
-                const data = await response.json();
+          const data = await response.json();
 
-                if (response.ok) {
-                    alert("Conta criada com sucesso! Faça login.");
-                    alternarFormulario();
-                    // Preenche o email automaticamente pra facilitar
-                    document.getElementById('loginEmail').value = email;
-                } else {
-                    alert("Erro: " + (data.error || "Falha no cadastro"));
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Erro de conexão.");
-            } finally {
-                btn.innerHTML = 'CADASTRAR';
-                btn.disabled = false;
-            }
+          if (response.ok) {
+            alert("Conta criada com sucesso! Faça login.");
+            alternarFormulario();
+
+            document.getElementById("loginEmail").value = email;
+          } else {
+            alert("Erro: " + (data.error || "Falha no cadastro"));
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Erro de conexão.");
+        } finally {
+          btn.innerHTML = "CADASTRAR";
+          btn.disabled = false;
         }
+      }
     </script>
-</body>
+  </body>
 </html>

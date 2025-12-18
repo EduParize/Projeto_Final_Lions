@@ -1,32 +1,32 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 
-process.env.TZ = 'UTC';
+process.env.TZ = "UTC";
 
 const TWENTY_SECONDS_OF_TIMEOUT = 20000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const config = {
-  moduleFileExtensions: ['js', 'json'],
-  rootDir: path.resolve(__dirname, '..'),
+  moduleFileExtensions: ["js", "json"],
+  rootDir: path.resolve(__dirname, ".."),
   bail: 1,
-  testRegex: '.*\\.unit.test\\.js$ ',
-  setupFiles: ['<rootDir>/jest/setup-test.js'],
-  testEnvironment: 'node',
+  testRegex: ".*\\.unit.test\\.js$ ",
+  setupFiles: ["<rootDir>/jest/setup-test.js"],
+  testEnvironment: "node",
   transform: {
-    '^.+\\.js$': [
-      'babel-jest',
-      { configFile: path.resolve(__dirname, '../babel.config.cjs') },
+    "^.+\\.js$": [
+      "babel-jest",
+      { configFile: path.resolve(__dirname, "../babel.config.cjs") },
     ],
   },
-  collectCoverageFrom: ['**/*.js', '!**/test/**'],
+  collectCoverageFrom: ["**/*.js", "!**/test/**"],
   coveragePathIgnorePatterns: [
-    '/src/server.js',
-    '/src/__tests__',
-    '/src/constants.js',
+    "/src/server.js",
+    "/src/__tests__",
+    "/src/constants.js",
   ],
-  coverageDirectory: 'coverage/unit',
+  coverageDirectory: "coverage/unit",
   testTimeout: TWENTY_SECONDS_OF_TIMEOUT,
 };
 

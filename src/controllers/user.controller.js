@@ -31,8 +31,7 @@ export default {
   },
   async saveTeam(req, res, next) {
     try {
-      
-      const userId = req.user.id; 
+      const userId = req.user.id;
       const { playerIds } = req.body;
 
       const updatedUser = await userService.saveUserTeam(userId, playerIds);

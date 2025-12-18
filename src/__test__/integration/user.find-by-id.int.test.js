@@ -19,11 +19,10 @@ describe("when we try to find a user by a valid id", () => {
     expect(foundUser.email).toBe(userData.email.toLowerCase());
   });
 
-  it('should return null when user doesnt exist', async()=>{
-    const fakeID = 'laelex10000'
-    const findUser = await userRepository.findById(fakeID._id)
+  it("should return null when user doesnt exist", async () => {
+    const fakeID = "laelex10000";
+    const findUser = await userRepository.findById(fakeID._id);
 
-    expect(findUser).toBeNull()
-
-  })
+    expect(findUser).toBeNull();
+  });
 });
