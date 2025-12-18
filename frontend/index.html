@@ -602,6 +602,56 @@
     </div>
 
     <div class="modal fade" id="modalEscalacao" tabindex="-1">
+      <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div
+              class="modal-header text-white rounded-top-4 py-3"
+              style="background: var(--dourado)"
+            >
+              <h5 class="modal-title fw-bold text-dark">✏️ Editar Jogador</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body p-4">
+              <form id="form-editar" onsubmit="salvarEdicao(event)">
+                <input type="hidden" id="edit-id" />
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted"
+                    >Nome do Jogador</label
+                  >
+                  <input
+                    type="text"
+                    id="edit-nome"
+                    class="form-control"
+                    required
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label fw-bold text-muted">Posição</label>
+                  <select id="edit-posicao" class="form-select" required>
+                    <option value="Goleiro">Goleiro</option>
+                    <option value="Defensor">Defensor</option>
+                    <option value="Meio Campo">Meio Campo</option>
+                    <option value="Atacante">Atacante</option>
+                  </select>
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-success fw-bold py-2">
+                    Salvar Alterações
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0 shadow-lg">
           <div
@@ -732,19 +782,158 @@
       function renderizarLista(lista) {
         const container = document.getElementById("lista-jogadores-render");
         container.innerHTML = "";
+
         if (lista.length === 0) {
           container.innerHTML =
             '<div class="p-5 text-center text-muted">Nenhum jogador encontrado.</div>';
           return;
         }
+
+        const isAdmin =
+          user.role && (user.role.includes("ADMIN") || user.role === "ADMIN");
+
         lista.forEach((j) => {
-          const btn = document.createElement("button");
-          btn.className =
-            "list-group-item list-group-item-action py-3 mb-2 rounded-4 border shadow-sm d-flex align-items-center";
-          btn.innerHTML = `<div style="width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">🏃</div><span class="fw-bold fs-5" style="color: var(--verde-palmeiras);">${j.namePlayer}</span>`;
-          btn.onclick = () => escolherJogador(j);
-          container.appendChild(btn);
+          const itemDiv = document.createElement("div");
+          itemDiv.className =
+            "list-group-item list-group-item-action py-3 mb-2 rounded-4 border shadow-sm d-flex align-items-center justify-content-between";
+
+          const infoDiv = document.createElement("div");
+          infoDiv.className = "d-flex align-items-center flex-grow-1";
+          infoDiv.style.cursor = "pointer";
+          infoDiv.onclick = () => escolherJogador(j);
+          infoDiv.innerHTML = `
+            <div style="width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">🏃</div>
+            <span class="fw-bold fs-5" style="color: var(--verde-palmeiras);">${j.namePlayer}</span>
+        `;
+
+          itemDiv.appendChild(infoDiv);
+
+          if (isAdmin) {
+            const actionsDiv = document.createElement("div");
+            actionsDiv.className = "d-flex gap-2";
+
+            const btnEdit = document.createElement("button");
+            btnEdit.className = "btn btn-sm btn-outline-warning";
+            btnEdit.innerHTML = "✏️";
+            btnEdit.title = "Editar Nome";
+            btnEdit.onclick = (e) => {
+              e.stopPropagation();
+              editarJogador(j);
+            };
+
+            const btnDelete = document.createElement("button");
+            btnDelete.className = "btn btn-sm btn-outline-danger";
+            btnDelete.innerHTML = "🗑️";
+            btnDelete.title = "Excluir Jogador";
+            btnDelete.onclick = (e) => {
+              e.stopPropagation();
+              excluirJogador(j);
+            };
+
+            actionsDiv.appendChild(btnEdit);
+            actionsDiv.appendChild(btnDelete);
+            itemDiv.appendChild(actionsDiv);
+          }
+
+          container.appendChild(itemDiv);
         });
+      }
+      async function editarJogador(jogador) {
+        document.getElementById("edit-id").value = jogador._id;
+        document.getElementById("edit-nome").value = jogador.namePlayer;
+        document.getElementById("edit-posicao").value = jogador.positionPlayer;
+
+        new bootstrap.Modal(document.getElementById("modalEditar")).show();
+      }
+      async function salvarEdicao(event) {
+        event.preventDefault();
+
+        const id = document.getElementById("edit-id").value;
+        const novoNome = document.getElementById("edit-nome").value;
+        const novaPosicao = document.getElementById("edit-posicao").value;
+        const btn = event.target.querySelector("button");
+
+        const textoOriginal = btn.innerText;
+        btn.innerText = "Salvando...";
+        btn.disabled = true;
+
+        try {
+          const res = await fetch(`${API_URL}/players/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              namePlayer: novoNome,
+              positionPlayer: novaPosicao,
+            }),
+          });
+
+          if (res.ok) {
+            alert("Jogador atualizado com sucesso! ✅");
+
+            const modalEl = document.getElementById("modalEditar");
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            modalInstance.hide();
+
+            if (slotFoco !== null) {
+              const posicaoAbertaNoFundo =
+                todosJogadores.find((p) => p._id === id)?.positionPlayer ||
+                novaPosicao;
+
+              await carregarJogadoresDisponiveis();
+
+              const inputBusca = document.getElementById("input-busca-jogador");
+              if (inputBusca) {
+                const listaRecente = todosJogadores.filter(
+                  (p) => p.positionPlayer === novaPosicao
+                );
+                bootstrap.Modal.getInstance(
+                  document.getElementById("modalSelecao")
+                ).hide();
+                alert("Lista atualizada! Abra a seleção novamente.");
+              }
+            }
+          } else {
+            const data = await res.json();
+            alert("Erro ao editar: " + (data.error || "Erro desconhecido"));
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Erro de conexão.");
+        } finally {
+          btn.innerText = textoOriginal;
+          btn.disabled = false;
+        }
+      }
+
+      async function excluirJogador(jogador) {
+        const confirmacao = confirm(
+          `Tem certeza que deseja EXCLUIR o jogador ${jogador.namePlayer}?`
+        );
+
+        if (!confirmacao) return;
+
+        try {
+          const res = await fetch(`${API_URL}/players/${jogador._id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (res.status === 204 || res.ok) {
+            alert("Jogador excluído!");
+
+            abrirSelecao(jogador.positionPlayer, slotFoco);
+          } else {
+            alert("Erro ao excluir.");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Erro de conexão ao excluir.");
+        }
       }
 
       function filtrarJogadoresNaTela() {
