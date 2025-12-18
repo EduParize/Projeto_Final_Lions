@@ -59,8 +59,8 @@ export default {
   async saveUserTeam(userId, playerIds) {
     const updatedUser = await repo.updateById(userId, { myTeam: playerIds });
     if (!updatedUser) throw createError("Usuário não encontrado", 404);
-    
-    return updatedUser.populate('myTeam.player');
+
+    return updatedUser.populate("myTeam.player");
   },
 
   async listUsers() {

@@ -710,16 +710,13 @@
 
       function restaurarSalvo() {
         if (user.myTeam && user.myTeam.length > 0) {
-          timeAtual.fill(null); // Limpa o time visualmente
-          
+          timeAtual.fill(null);
+
           user.myTeam.forEach((item) => {
-            // Agora 'item' tem { player: {...}, slot: 0 }
-            // Verificamos se tem o jogador E o slot
             if (item.player && item.slot !== undefined) {
               const jogador = item.player;
               const posicaoIndex = item.slot;
-              
-              // Coloca exatamente no slot correto!
+
               if (posicaoIndex < 11) {
                 timeAtual[posicaoIndex] = jogador;
                 atualizarSlotVisual(posicaoIndex, jogador);
@@ -858,98 +855,101 @@
         new bootstrap.Modal(document.getElementById("modalEditar")).show();
       }
       async function salvarEdicao(event) {
-    event.preventDefault();
+        event.preventDefault();
 
-    const id = document.getElementById('edit-id').value;
-    const novoNome = document.getElementById('edit-nome').value;
-    const novaPosicao = document.getElementById('edit-posicao').value;
-    const btn = event.target.querySelector('button');
+        const id = document.getElementById("edit-id").value;
+        const novoNome = document.getElementById("edit-nome").value;
+        const novaPosicao = document.getElementById("edit-posicao").value;
+        const btn = event.target.querySelector("button");
 
-    const textoOriginal = btn.innerText;
-    btn.innerText = "Salvando...";
-    btn.disabled = true;
+        const textoOriginal = btn.innerText;
+        btn.innerText = "Salvando...";
+        btn.disabled = true;
 
-    try {
-        const res = await fetch(`${API_URL}/players/${id}`, {
+        try {
+          const res = await fetch(`${API_URL}/players/${id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ 
-                namePlayer: novoNome, 
-                positionPlayer: novaPosicao 
-            })
-        });
+            body: JSON.stringify({
+              namePlayer: novoNome,
+              positionPlayer: novaPosicao,
+            }),
+          });
 
-        if (res.ok) {
-            // --- LÓGICA NOVA: Verificar se estava no time e limpar se mudou de posição ---
-            
-            // Procura se esse jogador (pelo ID) está em algum lugar do campo
-            const indexNoTime = timeAtual.findIndex(p => p && p._id === id);
-            
+          if (res.ok) {
+            const indexNoTime = timeAtual.findIndex((p) => p && p._id === id);
+
             if (indexNoTime !== -1) {
-                const jogadorNaMemoria = timeAtual[indexNoTime];
-                
-                // O 'jogadorNaMemoria' ainda tem a posição VELHA. 'novaPosicao' é a NOVA.
-                // Se forem diferentes, significa que ele mudou de função.
-                if (jogadorNaMemoria.positionPlayer !== novaPosicao) {
-                    
-                    // 1. Remove ele da memória do time
-                    timeAtual[indexNoTime] = null; 
-                    
-                    // 2. Reseta o visual daquele slot (volta a ficar vazio)
-                    const numeros = [7, 9, 11, 8, 10, 5, 2, 3, 4, 6, "🧤"];
-                    const nomes = ["Atacante", "Atacante", "Atacante", "Meio Campo", "Meio Campo", "Meio Campo", "Defensor", "Defensor", "Defensor", "Defensor", "Goleiro"];
-                    
-                    const slot = document.getElementById(`slot-${indexNoTime}`);
-                    const name = document.getElementById(`name-${indexNoTime}`);
-                    
-                    if (slot && name) {
-                        slot.innerText = numeros[indexNoTime];
-                        slot.classList.remove('bg-selected'); // Tira a cor verde
-                        name.innerText = nomes[indexNoTime]; // Volta para "Defensor", "Atacante", etc.
-                    }
-                    
-                    alert("⚠️ Como a posição mudou, o jogador foi removido da escalação para evitar erros.");
-                } else {
-                    // Se a posição é a mesma, só atualiza o nome visualmente para não precisar dar F5
-                    jogadorNaMemoria.namePlayer = novoNome;
-                    const nameVisual = document.getElementById(`name-${indexNoTime}`);
-                    if (nameVisual) nameVisual.innerText = novoNome;
+              const jogadorNaMemoria = timeAtual[indexNoTime];
+
+              if (jogadorNaMemoria.positionPlayer !== novaPosicao) {
+                timeAtual[indexNoTime] = null;
+
+                const numeros = [7, 9, 11, 8, 10, 5, 2, 3, 4, 6, "🧤"];
+                const nomes = [
+                  "Atacante",
+                  "Atacante",
+                  "Atacante",
+                  "Meio Campo",
+                  "Meio Campo",
+                  "Meio Campo",
+                  "Defensor",
+                  "Defensor",
+                  "Defensor",
+                  "Defensor",
+                  "Goleiro",
+                ];
+
+                const slot = document.getElementById(`slot-${indexNoTime}`);
+                const name = document.getElementById(`name-${indexNoTime}`);
+
+                if (slot && name) {
+                  slot.innerText = numeros[indexNoTime];
+                  slot.classList.remove("bg-selected");
+                  name.innerText = nomes[indexNoTime];
                 }
+
+                alert(
+                  "⚠️ Como a posição mudou, o jogador foi removido da escalação para evitar erros."
+                );
+              } else {
+                jogadorNaMemoria.namePlayer = novoNome;
+                const nameVisual = document.getElementById(
+                  `name-${indexNoTime}`
+                );
+                if (nameVisual) nameVisual.innerText = novoNome;
+              }
             }
-            // ---------------------------------------------------------------------------
 
             alert("Jogador atualizado com sucesso! ✅");
-            
-            // Fecha o modal de edição
-            const modalEl = document.getElementById('modalEditar');
+
+            const modalEl = document.getElementById("modalEditar");
             const modalInstance = bootstrap.Modal.getInstance(modalEl);
             modalInstance.hide();
 
-            // Atualiza a lista de seleção
             await carregarJogadoresDisponiveis();
 
-            // Fecha a lista de seleção antiga para evitar bugs visuais e pede para reabrir
-            const modalSelecao = document.getElementById('modalSelecao');
-            const modalSelecaoInstance = bootstrap.Modal.getInstance(modalSelecao);
+            const modalSelecao = document.getElementById("modalSelecao");
+            const modalSelecaoInstance =
+              bootstrap.Modal.getInstance(modalSelecao);
             if (modalSelecaoInstance) modalSelecaoInstance.hide();
-            
-            alert("Dados recarregados. Por favor, abra a seleção novamente.");
 
-        } else {
+            alert("Dados recarregados. Por favor, abra a seleção novamente.");
+          } else {
             const data = await res.json();
             alert("Erro ao editar: " + (data.error || "Erro desconhecido"));
+          }
+        } catch (error) {
+          console.error("Erro:", error);
+          alert("Erro de conexão.");
+        } finally {
+          btn.innerText = textoOriginal;
+          btn.disabled = false;
         }
-    } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro de conexão.");
-    } finally {
-        btn.innerText = textoOriginal;
-        btn.disabled = false;
-    }
-}
+      }
 
       async function excluirJogador(jogador) {
         const confirmacao = confirm(
@@ -969,16 +969,13 @@
           if (res.status === 204 || res.ok) {
             alert("Jogador excluído!");
 
-            // --- NOVO BLOCO: Limpa o jogador do campo se ele estiver escalado ---
             const indexNoTime = timeAtual.findIndex(
               (p) => p && p._id === jogador._id
             );
 
             if (indexNoTime !== -1) {
-              // 1. Remove da memória do time
               timeAtual[indexNoTime] = null;
 
-              // 2. Reseta o visual daquele slot (volta para o número/interrogação)
               const numeros = [7, 9, 11, 8, 10, 5, 2, 3, 4, 6, "🧤"];
               const nomes = [
                 "Atacante",
@@ -1000,12 +997,8 @@
               slot.innerText = numeros[indexNoTime];
               slot.classList.remove("bg-selected");
               name.innerText = nomes[indexNoTime];
-
-              // Dica: Se quiser, você pode clicar em "Salvar Time" depois para confirmar a remoção no banco
             }
-            // -------------------------------------------------------------------
 
-            // Recarrega a lista para o jogador sumir do modal
             abrirSelecao(jogador.positionPlayer, slotFoco);
           } else {
             alert("Erro ao excluir.");
@@ -1067,19 +1060,16 @@
       }
 
       async function salvarTime() {
-        // --- MUDANÇA: Agora mapeamos { player: ID, slot: INDEX } ---
         const dadosParaSalvar = timeAtual
-            .map((jogador, index) => {
-                // Se tiver jogador nesse slot, cria o objeto com o ID e o SLOT
-                if (jogador) {
-                    return { player: jogador._id, slot: index };
-                }
-                return null;
-            })
-            .filter(item => item !== null); // Remove os nulos
+          .map((jogador, index) => {
+            if (jogador) {
+              return { player: jogador._id, slot: index };
+            }
+            return null;
+          })
+          .filter((item) => item !== null);
 
         try {
-          // Enviamos 'playerIds' (mantive o nome para não quebrar o controller) mas com os objetos novos
           const res = await fetch(`${API_URL}/users/team`, {
             method: "PUT",
             headers: {

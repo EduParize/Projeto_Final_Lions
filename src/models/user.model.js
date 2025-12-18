@@ -11,11 +11,13 @@ const userSchema = new mongoose.Schema({
   },
   password: { type: String, required: true },
   role: { type: [String], enum: ["ADMIN", "USER"], default: "USER" },
-  myTeam: [{
-    _id: false, // Não precisa de ID para essa sub-relação
-    player: { type: mongoose.Schema.Types.ObjectId, ref: 'Player' },
-    slot: { type: Number, required: true }
-  }]
+  myTeam: [
+    {
+      _id: false,
+      player: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
+      slot: { type: Number, required: true },
+    },
+  ],
 });
 
 export default mongoose.model("User", userSchema);

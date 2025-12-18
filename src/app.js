@@ -20,7 +20,7 @@ app.use("/api", playerRoutes);
 
 app.get("*", (req, res) => {
   if (req.url.startsWith("/api")) return next();
-  res.sendFile(path.join(__dirname, "../frontend/login.html")); // Ou index.html, dependendo da lógica
+  res.sendFile(path.join(__dirname, "../frontend/login.html"));
 });
 app.use(errorMiddleware);
 export default app;

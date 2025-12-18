@@ -11,7 +11,7 @@ export default {
     return User.findById(id);
   },
   updateById(id, data) {
-    return User.findByIdAndUpdate(id, data, { new: true });
+    return User.findByIdAndUpdate(id, data, { new: true, runValidators: true });
   },
   deleteById(id) {
     return User.findByIdAndDelete(id);
